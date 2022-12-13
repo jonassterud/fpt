@@ -1,4 +1,4 @@
-![fpt](src/www/logo/cover.png)
+![fpt](media/logo/cover.png)
 
 ## About
 **fpt** is a financial portfolio tracker.
