@@ -1,0 +1,17 @@
+[workspace]
+members = ["crates/*"]
+
+[package]
+name = "fpt"
+version = "0.0.0"
+authors = ["Jonas Mathisrud Sterud <jonas.sterud@gmail.com>"]
+edition = "2021"
+description = "Financial portfolio tracker"
+repository = "https://github.com/jonassterud/fpt"
+license = "MIT"
+
+[dependencies]
+fpt_api = { path = "crates/fpt_api" }
+fpt_web = { path = "crates/fpt_web" }
+
+anyhow = "1.0"
