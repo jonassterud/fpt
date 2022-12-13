@@ -1,0 +1,11 @@
+[package]
+name = "fpt_web"
+version = "0.0.0"
+authors = ["Jonas Mathisrud Sterud <jonas.sterud@gmail.com>"]
+edition = "2021"
+description = "Financial portfolio tracker - web server"
+repository = "https://github.com/jonassterud/fpt"
+license = "MIT"
+
+[dependencies]
+anyhow = "1.0"
