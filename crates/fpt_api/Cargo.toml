@@ -8,4 +8,6 @@ repository = "https://github.com/jonassterud/fpt"
 license = "MIT"
 
 [dependencies]
+tokio = { version = "1.23", features = ["rt", "macros", "net"] }
+actix-web = "4.2"
 anyhow = "1.0"
