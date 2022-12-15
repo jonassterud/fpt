@@ -1,6 +1,8 @@
-pub fn www() -> actix_files::Files {
+use actix_files::Files;
+
+pub fn www() -> Files {
     const DIR: &str = "./crates/fpt_web/www/";
     const INDEX: &str = "index.html";
 
-    actix_files::Files::new("/", DIR).index_file(INDEX)
+    Files::new("/", DIR).index_file(INDEX)
 }
