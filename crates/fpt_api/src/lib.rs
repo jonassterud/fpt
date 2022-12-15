@@ -8,6 +8,8 @@ use anyhow::Result;
 use database::Database;
 
 pub async fn start() -> Result<()> {
+    dotenv::dotenv()?;
+
     let mut db = Database::open()?;
     db.close();
 

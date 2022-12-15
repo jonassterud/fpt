@@ -1,10 +1,16 @@
-![fpt](media/logo/cover.png)
+<picture>
+  <source width='150px' srcset='media/logo/vector/default-monochrome-white.svg' media='(prefers-color-scheme: dark)'>
+  <img width='150px' src='media/logo/vector/default-monochrome-black.svg'>
+</picture>
 
-## About
-**fpt** is a financial portfolio tracker.
+ 
+\- a financial portfolio tracker.
 
 ## Configuration
-...
+Use environment variables or a `.env` file for configuration:
+```conf
+(...)
+```
 
 ## Contributing
 Feel free to contribute!
