@@ -9,7 +9,7 @@
 ## Configuration
 Use environment variables or a `.env` file for configuration:
 ```conf
-(...)
+SPAREBANK1_ACCESS_TOKEN=<...>
 ```
 
 ## Contributing
