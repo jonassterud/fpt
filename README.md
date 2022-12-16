@@ -7,9 +7,12 @@
 \- a financial portfolio tracker.
 
 ## Configuration
-Use environment variables or a `.env` file for configuration:
-```conf
-SPAREBANK1_ACCESS_TOKEN=<...>
+Configuration is done in the `config.toml` file that is created when you run the program.
+Remember that this file contains very sensitive data!
+```toml
+SPAREBANK1_ID = ''
+SPAREBANK1_SECRET = ''
+SPAREBANK1_REFRESH_TOKEN = ''
 ```
 
 ## Contributing

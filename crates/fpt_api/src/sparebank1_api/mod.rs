@@ -1,4 +1,4 @@
-use crate::structures;
+use crate::{config::Config, structures};
 use anyhow::{anyhow, Result};
 
 /// Get value from `serde_json::Value` as a `&str`.
@@ -29,13 +29,13 @@ fn gv_f64(key: &str, val: &serde_json::Value) -> Result<f64> {
 /// This function will update the refresh token, but *only* in the current process.
 /// Keep this in mind when using GitHub Codespaces for example.
 pub fn get_access_token() -> Result<String> {
-    dotenv::dotenv().ok();
+    let mut config = Config::load()?;
 
     let resp = ureq::post("https://api-auth.sparebank1.no/oauth/token")
         .send_form(&[
-            ("client_id", &std::env::var("SPAREBANK1_ID")?),
-            ("client_secret", &std::env::var("SPAREBANK1_SECRET")?),
-            ("refresh_token", &std::env::var("SPAREBANK1_REFRESH_TOKEN")?),
+            ("client_id", &config.sparebank1_id),
+            ("client_secret", &config.sparebank1_secret),
+            ("refresh_token", &config.sparebank1_refresh_token),
             ("grant_type", "refresh_token"),
         ])?
         .into_json::<serde_json::Value>()?;
@@ -43,8 +43,8 @@ pub fn get_access_token() -> Result<String> {
     let new_access_token = gv_str("access_token", &resp)?;
     let new_refresh_token = gv_str("refresh_token", &resp)?;
 
-    // TODO: Oops - only sets variable for current process!
-    std::env::set_var("SPAREBANK1_REFRESH_TOKEN", new_refresh_token);
+    config.sparebank1_refresh_token = new_refresh_token.to_string();
+    config.write()?;
 
     Ok(new_access_token.to_string())
 }

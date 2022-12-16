@@ -1,3 +1,4 @@
+mod config;
 mod database;
 mod paths;
 mod sparebank1_api;
@@ -6,11 +7,11 @@ mod tests;
 
 use actix_web::{App, HttpServer};
 use anyhow::Result;
+use config::Config;
 use database::Database;
 
 pub async fn start() -> Result<()> {
-    dotenv::dotenv().ok();
-
+    Config::load()?;
     Database::open()?;
 
     HttpServer::new(|| {
