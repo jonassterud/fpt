@@ -2,12 +2,12 @@ use crate::Database;
 use actix_web::{get, Responder};
 use anyhow::Result;
 
+/// Returns assets from the database.
 #[get("/get_assets")]
 pub async fn get_assets() -> impl Responder {
     fn open_and_get_assets() -> Result<String> {
         let mut db = Database::open()?;
         let assets = db.get_assets()?;
-        db.close();
 
         Ok(serde_json::to_string(&assets)?)
     }

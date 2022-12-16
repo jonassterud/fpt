@@ -9,10 +9,16 @@ pub enum AssetCategory {
     Cryptocurrency,
 }
 
+/// General asset struct.
 #[derive(Deserialize, Serialize)]
 pub struct Asset {
+    /// Category of asset.
     pub category: AssetCategory,
+    /// Display name.
+    pub name: String,
+    /// Ticker.
     pub code: String,
+    /// Amount.
     pub amount: f64,
 }
 
@@ -40,6 +46,7 @@ impl Default for Asset {
     fn default() -> Self {
         Self {
             category: AssetCategory::Unknown,
+            name: String::new(),
             code: String::new(),
             amount: 0.0,
         }
