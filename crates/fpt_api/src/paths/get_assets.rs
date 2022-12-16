@@ -6,7 +6,7 @@ use anyhow::Result;
 #[get("/get_assets")]
 pub async fn get_assets() -> impl Responder {
     fn open_and_get_assets() -> Result<String> {
-        let mut db = Database::open()?;
+        let db = Database::open()?;
         let assets = db.get_assets()?;
 
         Ok(serde_json::to_string(&assets)?)
