@@ -33,8 +33,8 @@ impl Asset {
     pub fn get_value(&self, currency: &str) -> Result<f64> {
         match self.category {
             AssetCategory::Stock => {
-                let out = todo!();
-                Ok(out)
+                // ...
+                Err(anyhow!("not implemented yet"))
             }
             AssetCategory::Currency => {
                 let out = currency_api::get_value(&self.code.to_lowercase(), currency)?;

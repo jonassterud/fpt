@@ -14,8 +14,8 @@ pub async fn get_assets() -> impl Responder {
 
     match open_and_get_assets() {
         Ok(out) => actix_web::HttpResponse::Ok().body(out),
-        Err(e) => {
-            eprint!("{}", e);
+        Err(error) => {
+            eprint!("{error}");
             actix_web::HttpResponse::InternalServerError().finish()
         }
     }
