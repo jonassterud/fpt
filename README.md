@@ -1,10 +1,30 @@
-![fpt](media/logo/cover.png)
+<picture>
+  <source width='150px' srcset='media/logo/vector/default-monochrome-white.svg' media='(prefers-color-scheme: dark)'>
+  <img width='150px' src='media/logo/vector/default-monochrome-black.svg'>
+</picture>
 
-## About
-**fpt** is a financial portfolio tracker.
+ 
+\- a financial portfolio tracker.
+
+[![CI](https://github.com/jonassterud/fpt/actions/workflows/ci.yml/badge.svg)](https://github.com/jonassterud/fpt/actions/workflows/ci.yml)
+[![Release](https://github.com/jonassterud/fpt/actions/workflows/release.yml/badge.svg)](https://github.com/jonassterud/fpt/actions/workflows/release.yml)
+
+## Supported platforms/assets
+* Sparebank 1
+* Nordnet (*coming soon*)
+* Coinbase (*coming soon*)
+* Bitcoin
+* Ethereum (*coming soon*)
 
 ## Configuration
-...
+Configuration is done in the `config.toml` file that is created when you run the program.  
+Remember that this file contains very sensitive data!
+```toml
+SPAREBANK1_ID = ''
+SPAREBANK1_SECRET = ''
+SPAREBANK1_REFRESH_TOKEN = ''
+BITCOIN_ADDRESSES = ['']
+```
 
 ## Contributing
 Feel free to contribute!

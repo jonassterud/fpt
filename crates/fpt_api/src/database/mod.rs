@@ -1,54 +1,71 @@
 use crate::structures;
 use anyhow::{anyhow, Result};
+use rusqlite::{Connection, ToSql};
 
+/// SQLite Database.
 pub struct Database {
-    connection: Option<sqlite::Connection>,
+    /// Connection to database.
+    connection: Option<Connection>,
 }
 
 impl Database {
+    /// Open/init database at `data.db3`.
     pub fn open() -> Result<Database> {
-        let connection = sqlite::open("database.db")?;
+        let connection = Connection::open("data.db3")?;
 
-        let query = "CREATE TABLE IF NOT EXISTS assets (data BLOB);";
-        connection.execute(query)?;
+        connection.execute(
+            "CREATE TABLE IF NOT EXISTS assets (
+                id    INTEGER PRIMARY KEY,
+                data  BLOB
+            )",
+            [],
+        )?;
 
         Ok(Database {
             connection: Some(connection),
         })
     }
 
-    pub fn close(&mut self) {
-        self.connection = None;
-    }
-
-    pub fn get_connection(&self) -> Result<&sqlite::Connection> {
+    /// Get a reference to the database connection.
+    pub fn get_connection(&self) -> Result<&Connection> {
         self.connection
             .as_ref()
             .ok_or_else(|| anyhow!("missing connection"))
     }
 
+    /// Add an asset to the database.
     pub fn add_asset(&self, asset: &structures::Asset) -> Result<()> {
-        let query = format!(
-            "INSERT INTO assets VALUES ({});",
-            serde_json::to_string(asset)?
-        );
-
-        self.get_connection()?.execute(query)?;
+        self.get_connection()?.execute(
+            "INSERT INTO assets (data) VALUES (?1)",
+            [&serde_json::to_value(asset)? as &dyn ToSql],
+        )?;
 
         Ok(())
     }
 
+    /// Get a vector of assets from the database.
     pub fn get_assets(&self) -> Result<Vec<structures::Asset>> {
         let mut out = vec![];
 
-        let query = "SELECT * FROM assets";
-        let mut statement = self.get_connection()?.prepare(query)?;
+        let mut stmt = self.get_connection()?.prepare("SELECT data FROM assets")?;
+        let assets_iter = stmt.query_map([], |row| {
+            let json_value = row.get::<usize, serde_json::Value>(0)?;
+            let asset_value = serde_json::from_value::<structures::Asset>(json_value);
 
-        while let Ok(sqlite::State::Row) = statement.next() {
-            let data = statement.read::<String, _>("data")?;
-            out.push(serde_json::from_str(&data)?);
+            Ok(asset_value)
+        })?;
+
+        for asset in assets_iter {
+            out.push(asset??);
         }
 
         Ok(out)
+    }
+
+    /// Clear assets from the database.
+    pub fn clear_assets(&self) -> Result<()> {
+        self.get_connection()?.execute("DELETE FROM assets", [])?;
+
+        Ok(())
     }
 }

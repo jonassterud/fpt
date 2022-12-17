@@ -15,4 +15,4 @@ fpt_api = { path = "crates/fpt_api" }
 fpt_web = { path = "crates/fpt_web" }
 
 tokio = { version = "1.23", features = ["rt-multi-thread", "macros"] }
-anyhow = "1.0"
+anyhow = { version = "1.0", features = [] }
