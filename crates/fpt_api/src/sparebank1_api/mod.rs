@@ -26,9 +26,7 @@ fn gv_f64(key: &str, val: &serde_json::Value) -> Result<f64> {
 }
 
 /// Get access token from refresh token.
-pub fn get_access_token() -> Result<String> {
-    let mut config = Config::load()?;
-
+pub fn get_access_token(config: &mut Config) -> Result<String> {
     let resp = ureq::post("https://api-auth.sparebank1.no/oauth/token")
         .send_form(&[
             ("client_id", &config.sparebank1_id),
@@ -48,7 +46,7 @@ pub fn get_access_token() -> Result<String> {
 }
 
 /// Get Sparebank 1 accounts and transform them into vector of [`structures::Asset`].
-pub fn get_assets() -> Result<Vec<structures::Asset>> {
+pub fn get_assets(config: &mut Config) -> Result<Vec<structures::Asset>> {
     let mut out = vec![];
 
     let resp = ureq::get("https://api.sparebank1.no/personal/banking/accounts")
@@ -56,7 +54,10 @@ pub fn get_assets() -> Result<Vec<structures::Asset>> {
             "Accept",
             "application/vnd.sparebank1.v5+json; charset=utf-8",
         )
-        .set("Authorization", &format!("Bearer {}", get_access_token()?))
+        .set(
+            "Authorization",
+            &format!("Bearer {}", get_access_token(config)?),
+        )
         .call()?
         .into_json::<serde_json::Value>()?;
 

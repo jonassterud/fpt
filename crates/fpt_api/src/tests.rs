@@ -8,11 +8,15 @@ fn test_add_asset_to_database() {
 }
 
 #[test]
+#[ignore = "avoid spam"]
 fn test_sparebank1_get_access_token() {
-    sparebank1_api::get_access_token().unwrap();
+    let mut config = Config::load().unwrap();
+    sparebank1_api::get_access_token(&mut config).unwrap();
 }
 
 #[test]
+#[ignore = "avoid spam"]
 fn test_sparebank1_get_assets() {
-    sparebank1_api::get_assets().unwrap();
+    let mut config = Config::load().unwrap();
+    sparebank1_api::get_assets(&mut config).unwrap();
 }
