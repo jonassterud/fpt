@@ -26,8 +26,6 @@ fn gv_f64(key: &str, val: &serde_json::Value) -> Result<f64> {
 }
 
 /// Get access token from refresh token.
-/// This function will update the refresh token, but *only* in the current process.
-/// Keep this in mind when using GitHub Codespaces for example.
 pub fn get_access_token() -> Result<String> {
     let mut config = Config::load()?;
 
