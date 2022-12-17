@@ -18,7 +18,7 @@ impl Database {
                 id    INTEGER PRIMARY KEY,
                 data  BLOB
             )",
-            (),
+            [],
         )?;
 
         Ok(Database {
@@ -60,5 +60,12 @@ impl Database {
         }
 
         Ok(out)
+    }
+
+    /// Clear assets from the database.
+    pub fn clear_assets(&self) -> Result<()> {
+        self.get_connection()?.execute("DELETE FROM assets", [])?;
+
+        Ok(())
     }
 }

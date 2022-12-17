@@ -30,6 +30,7 @@ pub async fn update_assets() -> impl Responder {
         }
 
         // TODO: Don't loop - insert all assets in one query instead.
+        db.clear_assets()?;
         for asset in assets {
             db.add_asset(&asset)?;
         }
@@ -38,9 +39,9 @@ pub async fn update_assets() -> impl Responder {
     }
 
     match add_assets_to_database() {
-        Ok(()) => actix_web::HttpResponse::Ok().finish(),
-        Err(e) => {
-            eprint!("{}", e);
+        Ok(_) => actix_web::HttpResponse::Ok().finish(),
+        Err(error) => {
+            eprint!("{error}");
             actix_web::HttpResponse::InternalServerError().finish()
         }
     }
