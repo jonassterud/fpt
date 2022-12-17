@@ -1,6 +1,6 @@
 mod btccom_api;
-mod coinpaprika_api;
 mod config;
+mod currency_api;
 mod database;
 mod paths;
 mod sparebank1_api;

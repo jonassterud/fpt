@@ -1,3 +1,4 @@
+use crate::currency_api;
 use anyhow::{anyhow, Result};
 use serde::{Deserialize, Serialize};
 
@@ -29,19 +30,19 @@ pub struct Asset {
 
 impl Asset {
     /// Get value of asset in the given currency.
-    pub fn get_value(&self, currency: &str) -> Result<i64> {
+    pub fn get_value(&self, currency: &str) -> Result<f64> {
         match self.category {
             AssetCategory::Stock => {
-                let stock_price = todo!();
-                stock_price
+                let out = todo!();
+                Ok(out)
             }
             AssetCategory::Currency => {
-                let currency_price = todo!();
-                currency_price
+                let out = currency_api::get_value(&self.code.to_lowercase(), currency)?;
+                Ok(out)
             }
             AssetCategory::Cryptocurrency => {
-                let cryptocurrency_price = todo!();
-                cryptocurrency_price
+                let out = currency_api::get_value(&self.code.to_lowercase(), currency)?;
+                Ok(out)
             }
             AssetCategory::Unknown => Err(anyhow!("category is unknown")),
         }

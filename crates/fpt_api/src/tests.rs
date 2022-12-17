@@ -23,8 +23,8 @@ fn test_sparebank1_get_assets() {
 
 #[test]
 #[ignore = "avoid spam"]
-fn test_coinpaprika_get_price() {
-    coinpaprika_api::get_price("btc-bitcoin").unwrap();
+fn test_currency_get_value() {
+    currency_api::get_value("btc", "usd").unwrap();
 }
 
 #[test]
