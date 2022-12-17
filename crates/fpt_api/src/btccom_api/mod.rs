@@ -14,18 +14,15 @@ fn gv_f64(key: &str, val: &serde_json::Value) -> Result<f64> {
         .ok_or_else(|| anyhow!("value is not a f64"))
 }
 
-/// Get price of crypto currency.
-pub fn get_price(id: &str) -> Result<f64> {
-    let url = format!("https://api.coinpaprika.com/v1/coins/{id}/ohlcv/today");
+/// Get balance of Bitcoin address.
+pub fn get_balance(address: &str) -> Result<f64> {
+    let url = format!("https://chain.api.btc.com/v3/address/{address}");
     let resp = ureq::get(&url)
         .set("Accept", "application/json; charset=utf-8")
         .call()?
         .into_json::<serde_json::Value>()?;
 
-    let out = gv_f64(
-        "close",
-        resp.get(0).ok_or_else(|| anyhow!("value is not a vec"))?,
-    )?;
+    let out = gv_f64("balance", gv("data", &resp)?)?;
 
     Ok(out)
 }

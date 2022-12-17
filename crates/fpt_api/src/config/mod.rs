@@ -9,8 +9,10 @@ pub struct Config {
     pub sparebank1_id: String,
     /// Sparebank 1 client secret.
     pub sparebank1_secret: String,
-    /// Sparbank 1 refresh token.
+    /// Sparebank 1 refresh token.
     pub sparebank1_refresh_token: String,
+    /// Bitcoin addresses
+    pub bitcoin_addresses: Vec<String>,
 }
 
 impl Config {

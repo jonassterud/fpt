@@ -1,3 +1,4 @@
+mod btccom_api;
 mod coinpaprika_api;
 mod config;
 mod database;

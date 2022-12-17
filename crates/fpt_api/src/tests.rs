@@ -26,3 +26,9 @@ fn test_sparebank1_get_assets() {
 fn test_coinpaprika_get_price() {
     coinpaprika_api::get_price("btc-bitcoin").unwrap();
 }
+
+#[test]
+#[ignore = "avoid spam"]
+fn test_btccom_get_balance() {
+    btccom_api::get_balance("1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa").unwrap();
+}
