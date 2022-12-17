@@ -9,6 +9,13 @@
 [![CI](https://github.com/jonassterud/fpt/actions/workflows/ci.yml/badge.svg)](https://github.com/jonassterud/fpt/actions/workflows/ci.yml)
 [![Release](https://github.com/jonassterud/fpt/actions/workflows/release.yml/badge.svg)](https://github.com/jonassterud/fpt/actions/workflows/release.yml)
 
+## Supported platforms/assets
+* Sparebank 1
+* Nordnet (*coming soon*)
+* Coinbase (*coming soon*)
+* Bitcoin
+* Ethereum (*coming soon*)
+
 ## Configuration
 Configuration is done in the `config.toml` file that is created when you run the program.  
 Remember that this file contains very sensitive data!
@@ -16,6 +23,7 @@ Remember that this file contains very sensitive data!
 SPAREBANK1_ID = ''
 SPAREBANK1_SECRET = ''
 SPAREBANK1_REFRESH_TOKEN = ''
+BITCOIN_ADDRESSES = ['']
 ```
 
 ## Contributing
