@@ -2,7 +2,7 @@ use crate::Database;
 use actix_web::{get, Responder};
 use anyhow::Result;
 
-/// Returns assets from the database.
+/// Get assets from the database.
 #[get("/get_assets")]
 pub async fn get_assets() -> impl Responder {
     fn open_and_get_assets() -> Result<String> {

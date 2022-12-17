@@ -1,11 +1,16 @@
 use anyhow::{anyhow, Result};
 use serde::{Deserialize, Serialize};
 
+/// Enum of asset categories.
 #[derive(Deserialize, Serialize)]
 pub enum AssetCategory {
+    /// Unknown.
     Unknown,
+    /// Stocks/bonds/etc.
     Stock,
+    /// FIAT Currencies.
     Currency,
+    /// Cryptocurrencies.
     Cryptocurrency,
 }
 
@@ -23,6 +28,7 @@ pub struct Asset {
 }
 
 impl Asset {
+    /// Get value of asset in the given currency.
     pub fn get_value(&self, currency: &str) -> Result<i64> {
         match self.category {
             AssetCategory::Stock => {

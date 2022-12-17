@@ -2,11 +2,14 @@ use crate::structures;
 use anyhow::{anyhow, Result};
 use rusqlite::{Connection, ToSql};
 
+/// SQLite Database.
 pub struct Database {
+    /// Connection to database.
     connection: Option<Connection>,
 }
 
 impl Database {
+    /// Open/init database at `data.db3`.
     pub fn open() -> Result<Database> {
         let connection = Connection::open("data.db3")?;
 
@@ -23,12 +26,14 @@ impl Database {
         })
     }
 
+    /// Get a reference to the database connection.
     pub fn get_connection(&self) -> Result<&Connection> {
         self.connection
             .as_ref()
             .ok_or_else(|| anyhow!("missing connection"))
     }
 
+    /// Add an asset to the database.
     pub fn add_asset(&self, asset: &structures::Asset) -> Result<()> {
         self.get_connection()?.execute(
             "INSERT INTO assets (data) VALUES (?1)",
@@ -38,6 +43,7 @@ impl Database {
         Ok(())
     }
 
+    /// Get a vector of assets from the database.
     pub fn get_assets(&self) -> Result<Vec<structures::Asset>> {
         let mut out = vec![];
 

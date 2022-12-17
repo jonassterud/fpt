@@ -10,6 +10,7 @@ use anyhow::Result;
 use config::Config;
 use database::Database;
 
+/// Start the fpt_api.
 pub async fn start() -> Result<()> {
     Config::load()?;
     Database::open()?;
