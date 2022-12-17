@@ -24,7 +24,7 @@ impl Config {
             Config::default()
         };
 
-        std::fs::write("config.toml", toml::to_string_pretty(&config)?)?;
+        config.write()?;
 
         Ok(config)
     }
