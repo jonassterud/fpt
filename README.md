@@ -6,8 +6,11 @@
  
 \- a financial portfolio tracker.
 
+[![CI](https://github.com/jonassterud/fpt/actions/workflows/ci.yml/badge.svg)](https://github.com/jonassterud/fpt/actions/workflows/ci.yml)
+[![Release](https://github.com/jonassterud/fpt/actions/workflows/release.yml/badge.svg)](https://github.com/jonassterud/fpt/actions/workflows/release.yml)
+
 ## Configuration
-Configuration is done in the `config.toml` file that is created when you run the program.
+Configuration is done in the `config.toml` file that is created when you run the program.  
 Remember that this file contains very sensitive data!
 ```toml
 SPAREBANK1_ID = ''
