@@ -27,7 +27,8 @@ fn gv_f64(key: &str, val: &serde_json::Value) -> Result<f64> {
 
 /// Get access token from refresh token.
 pub fn get_access_token(config: &mut Config) -> Result<String> {
-    let resp = ureq::post("https://api-auth.sparebank1.no/oauth/token")
+    let url = "https://api-auth.sparebank1.no/oauth/token";
+    let resp = ureq::post(url)
         .send_form(&[
             ("client_id", &config.sparebank1_id),
             ("client_secret", &config.sparebank1_secret),

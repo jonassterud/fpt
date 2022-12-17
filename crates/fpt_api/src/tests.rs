@@ -20,3 +20,9 @@ fn test_sparebank1_get_assets() {
     let mut config = Config::load().unwrap();
     sparebank1_api::get_assets(&mut config).unwrap();
 }
+
+#[test]
+#[ignore = "avoid spam"]
+fn test_coinpaprika_get_price() {
+    coinpaprika_api::get_price("btc-bitcoin").unwrap();
+}

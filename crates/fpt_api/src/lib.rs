@@ -1,3 +1,4 @@
+mod coinpaprika_api;
 mod config;
 mod database;
 mod paths;
