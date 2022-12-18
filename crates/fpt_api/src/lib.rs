@@ -8,7 +8,7 @@ mod structures;
 mod tests;
 
 use actix_cors::Cors;
-use actix_web::{App, HttpServer};
+use actix_web::{middleware::Logger, App, HttpServer};
 use anyhow::Result;
 use config::Config;
 use database::Database;
@@ -26,6 +26,7 @@ pub async fn start() -> Result<()> {
             .wrap(Logger::default())
             .service(paths::get_assets)
             .service(paths::update_assets)
+            .service(paths::update_values)
     })
     .bind(("localhost", 5050))?
     .run()

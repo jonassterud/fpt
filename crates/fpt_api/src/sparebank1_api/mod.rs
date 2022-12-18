@@ -75,6 +75,7 @@ pub fn get_assets(config: &mut Config) -> Result<Vec<structures::Asset>> {
             name: name.to_string(),
             code: currency.to_string(),
             amount: balance,
+            value: None,
         });
     }
 

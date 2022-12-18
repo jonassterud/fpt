@@ -28,7 +28,7 @@ function fill_table() {
                 table.innerHTML += `<tr>
                     <td headers='name'>${asset.name}</td>
                     <td headers='amount'>${asset.amount} ${asset.code}</td>
-                    <td headers='value'>unknown</td>
+                    <td headers='value'>${asset.value}</td>
                 </tr>`;
             });
         });
