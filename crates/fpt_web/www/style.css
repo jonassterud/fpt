@@ -1,8 +1,9 @@
 :root {
     --background-color: #0d1117;
     --text-color-1: #b9bbbd;
-    --text-color-2: #7d7f81;
+    --text-color-2: #8a8d8f;
     --link-color: #236cb4;
+    --table-border-color: #3a4555;
 }
 
 /* Default elements */
@@ -13,7 +14,7 @@ a:visited {
 }
 
 
-/* Containers */
+/* Default containers */
 
 body {
     margin: 0;
@@ -52,6 +53,9 @@ main {
     width: 100%;
     height: auto;
 
+    display: flex;
+    justify-content: center;
+
     font-family: inherit;
     font-size: inherit;
     color: var(--text-color-1);
@@ -75,15 +79,44 @@ footer {
     color: var(--text-color-2);
 }
 
-/* Styling */
+/* Special styling */
 
 img#logo {
     width: 4em;
 }
 
-main table {
-    margin: 0 10px 0 10px;
-    padding: 0;
+table {
+    padding: 10px;
 
-    border: 1px solid black;
+    border: 1px solid var(--table-border-color);
+    border-collapse: collapse;
+}
+
+thead {
+    background-color: var(--background-color-2);
+}
+
+thead th {
+    font-size: 1.3em;
+}
+
+tbody th[scope="row"] {
+    color: var(--text-color-2);
+}
+
+tbody td[headers="amount"],
+tbody td[headers="value"] {
+    text-align: right;
+}
+
+td,
+th {
+    padding: 10px;
+
+    border: 1px solid var(--table-border-color);
+}
+
+tfoot {
+    background-color: var(--background-color-1);
+    font-style: italic;
 }
