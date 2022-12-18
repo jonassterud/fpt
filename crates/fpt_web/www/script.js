@@ -14,6 +14,13 @@ async function soft_load() {
     try {
         await update_values();
         await fill_table();
+
+        if (document.querySelector("table tbody").innerHTML === "") {
+            let message = "No assets were found in the local database.<br>Do you want to remotely load assets?";
+            if (await fancy_prompt(message) === true) {
+                return hard_load();
+            }
+        }
     }
     catch (error) {
         console.error(error);
