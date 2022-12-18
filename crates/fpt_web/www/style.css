@@ -13,6 +13,15 @@ a:visited {
     color: var(--link-color);
 }
 
+select {
+    background: none;
+    border: 0;
+
+    font-family: inherit;
+    font-size: 0.75em;
+    color: var(--text-color-1);
+}
+
 
 /* Default containers */
 
@@ -119,4 +128,8 @@ th {
 tfoot {
     background-color: var(--background-color-1);
     font-style: italic;
+}
+
+footer a {
+    margin: 0 10px 0 10px;
 }

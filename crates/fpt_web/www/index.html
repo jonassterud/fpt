@@ -22,7 +22,14 @@
                 <th scope='col' id='category'>Category</th>
                 <th scope='col' id='name'>Name</th>
                 <th scope='col' id='amount'>Amount</th>
-                <th scope='col' id='value'>Value</th>
+                <th scope='col' id='value'>
+                    <label for='currency'>Value</label>
+                    <select name='currency' id='currency' onchange='soft_load()'>
+                        <option value="usd" selected>(USD - $)</option>
+                        <option value="eur">(EUR - €)</option>
+                        <option value="nok">(NOK - kr)</option>
+                    </select>
+                </th>
             </thead>
             <tbody></tbody>
             <tfoot>
@@ -35,7 +42,10 @@
             </tfoot>
         </table>
     </main>
-    <footer><a href='https://github.com/jonassterud/fpt' target='_blank'>source code</a></footer>
+    <footer>
+        <a href='?hard_load'>full reload</a>
+        <a href='https://github.com/jonassterud/fpt' target='_blank'>source code</a>
+    </footer>
 </body>
 
 </html>
