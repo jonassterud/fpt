@@ -124,6 +124,7 @@ async function fill_table() {
         });
 }
 
+/// Parse currency in locale of currency.
 function parse_currency(number, currency) {
     switch (currency) {
         case "usd":
@@ -135,4 +136,34 @@ function parse_currency(number, currency) {
         default:
             throw Error("unsupported currency");
     }
+}
+
+/// Prompt user (yes or no).
+async function fancy_prompt(message) {
+    document.body.innerHTML += `
+        <div id="fancy-prompt">
+            <div>
+                <p>${message}</p>
+                <div>
+                    <button id='yes-button'>Yes</button>
+                    <button id='no-button'>No</button>
+                </div>
+            </div>
+        </div>
+    `;
+
+    let button_promise = new Promise(function (resolve, _) {
+        document.querySelector("#yes-button").addEventListener("click", () => {
+            resolve(true);
+        })
+
+        document.querySelector("#no-button").addEventListener("click", () => {
+            resolve(false);
+        });
+    });
+
+    let result = await button_promise;
+    document.querySelector("#fancy-prompt").remove();
+
+    return result;
 }
