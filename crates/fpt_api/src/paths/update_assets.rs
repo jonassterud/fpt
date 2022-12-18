@@ -1,4 +1,4 @@
-use crate::{btccom_api, config::Config, sparebank1_api, structures, Database};
+use crate::{btccom_api, config::Config, ethplorer_api, sparebank1_api, structures, Database};
 use actix_web::{get, Responder};
 use anyhow::Result;
 
@@ -26,6 +26,17 @@ pub async fn update_assets() -> impl Responder {
                 name: "Bitcoin".to_string(),
                 code: "BTC".to_string(),
                 amount: btccom_api::get_balance(&bitcoin_address)?,
+                value: None,
+            });
+        }
+
+        // Load Ethereum assets
+        for ethereum_address in config.ethereum_addresses {
+            assets.push(structures::Asset {
+                category: structures::AssetCategory::Cryptocurrency,
+                name: "Ethereum".to_string(),
+                code: "ETH".to_string(),
+                amount: ethplorer_api::get_balance(&ethereum_address)?,
                 value: None,
             });
         }
