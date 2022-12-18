@@ -1,3 +1,4 @@
+/// Determine whether to call hard/soft load based on search params.
 window.onload = () => {
     if (new URL(window.location).searchParams.has("hard_load")) {
         hard_load();
@@ -6,6 +7,7 @@ window.onload = () => {
     }
 }
 
+/// Update asset values and refill table.
 async function soft_load() {
     console.time("soft load");
 
@@ -21,13 +23,13 @@ async function soft_load() {
     }
 }
 
+/// Update assets and then call soft_load by removing search params.
 async function hard_load() {
     console.time("hard load");
 
     try {
         await update_assets();
-        await update_values();
-        await fill_table();
+        window.location.search = "";
     }
     catch (error) {
         console.error(error);
@@ -37,6 +39,7 @@ async function hard_load() {
     }
 }
 
+/// Update assets.
 async function update_assets() {
     await fetch("http://localhost:5050/update_assets")
         .catch((error) => {
@@ -44,6 +47,7 @@ async function update_assets() {
         });
 }
 
+/// Update asset values.
 async function update_values() {
     let currency = document.querySelector("#currency");
     if (currency === null) {
@@ -56,6 +60,7 @@ async function update_values() {
         });
 }
 
+/// Fill table with assets.
 async function fill_table() {
     let table = document.querySelector("main table tbody");
     let currency = document.querySelector("#currency");
