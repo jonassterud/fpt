@@ -60,6 +60,11 @@ async function update_values() {
         .catch((error) => {
             throw error;
         });
+
+    await fetch(`http://localhost:5050/save_pit`)
+        .catch((error) => {
+            throw error;
+        });
 }
 
 /// Fill table with assets.
