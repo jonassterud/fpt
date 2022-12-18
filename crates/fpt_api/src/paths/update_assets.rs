@@ -26,6 +26,7 @@ pub async fn update_assets() -> impl Responder {
                 name: "Bitcoin".to_string(),
                 code: "BTC".to_string(),
                 amount: btccom_api::get_balance(&bitcoin_address)?,
+                value: None,
             });
         }
 

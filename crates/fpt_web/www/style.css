@@ -1,8 +1,11 @@
 :root {
-    --background-color: #0d1117;
+    --background-color-1: #0d1117;
+    --background-color-2: #1f242c;
+    --accent-color-1: #329afc;
     --text-color-1: #b9bbbd;
-    --text-color-2: #7d7f81;
+    --text-color-2: #8a8d8f;
     --link-color: #236cb4;
+    --table-border-color: #3a4555;
 }
 
 /* Default elements */
@@ -12,8 +15,17 @@ a:visited {
     color: var(--link-color);
 }
 
+select {
+    background: none;
+    border: 0;
 
-/* Containers */
+    font-family: inherit;
+    font-size: 0.75em;
+    color: var(--text-color-1);
+}
+
+
+/* Default containers */
 
 body {
     margin: 0;
@@ -27,7 +39,7 @@ body {
 
     font-family: Arial, Helvetica, sans-serif;
     font-size: 1em;
-    background-color: var(--background-color);
+    background-color: var(--background-color-1);
 }
 
 header {
@@ -52,6 +64,9 @@ main {
     width: 100%;
     height: auto;
 
+    display: flex;
+    justify-content: center;
+
     font-family: inherit;
     font-size: inherit;
     color: var(--text-color-1);
@@ -75,15 +90,95 @@ footer {
     color: var(--text-color-2);
 }
 
-/* Styling */
+/* Header styling */
 
 img#logo {
     width: 4em;
 }
 
-main table {
+/* Table styling */
+
+table {
+    padding: 10px;
+
+    border: 1px solid var(--table-border-color);
+    border-collapse: collapse;
+}
+
+thead {
+    background-color: var(--background-color-2);
+}
+
+thead th {
+    font-size: 1.3em;
+}
+
+tbody th[scope="row"] {
+    color: var(--text-color-2);
+}
+
+td[headers="amount"],
+td[headers="value"] {
+    text-align: right;
+}
+
+td,
+th {
+    padding: 10px;
+
+    border: 1px solid var(--table-border-color);
+}
+
+tfoot {
+    background-color: var(--background-color-1);
+    font-style: italic;
+}
+
+/* Footer styling */
+
+footer a {
     margin: 0 10px 0 10px;
+}
+
+/* "Fancy prompt" styling */
+
+#fancy-prompt {
+    margin: 0;
     padding: 0;
 
-    border: 1px solid black;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: var(--text-color-1);
+    font-family: inherit;
+    font-size: inherit;
+
+    background-color: #00000075;
+}
+
+#fancy-prompt>div {
+    margin: 0;
+    padding: 20px;
+
+    min-width: 10%;
+    min-height: 10%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--background-color-2);
+    border: 1px solid var(--accent-color-1);
+}
+
+#fancy-prompt button {
+    padding: 10px 20px 10px 20px;
+
+    cursor: pointer;
 }

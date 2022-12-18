@@ -26,6 +26,8 @@ pub struct Asset {
     pub code: String,
     /// Amount.
     pub amount: f64,
+    /// Value.
+    pub value: Option<f64>,
 }
 
 impl Asset {
@@ -37,12 +39,12 @@ impl Asset {
                 Err(anyhow!("not implemented yet"))
             }
             AssetCategory::Currency => {
-                let out = currency_api::get_value(&self.code.to_lowercase(), currency)?;
-                Ok(out)
+                let price = currency_api::get_value(&self.code.to_lowercase(), currency)?;
+                Ok(price * self.amount)
             }
             AssetCategory::Cryptocurrency => {
-                let out = currency_api::get_value(&self.code.to_lowercase(), currency)?;
-                Ok(out)
+                let price = currency_api::get_value(&self.code.to_lowercase(), currency)?;
+                Ok(price * (self.amount / 100000000.0))
             }
             AssetCategory::Unknown => Err(anyhow!("category is unknown")),
         }
@@ -56,6 +58,7 @@ impl Default for Asset {
             name: String::new(),
             code: String::new(),
             amount: 0.0,
+            value: None,
         }
     }
 }
