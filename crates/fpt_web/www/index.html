@@ -25,19 +25,19 @@
                 <th scope='col' id='value'>
                     <label for='currency'>Value</label>
                     <select name='currency' id='currency' onchange='soft_load()'>
-                        <option value="usd" selected>(USD - $)</option>
-                        <option value="eur">(EUR - €)</option>
-                        <option value="nok">(NOK - kr)</option>
+                        <option value='usd' selected>(USD - $)</option>
+                        <option value='eur'>(EUR - €)</option>
+                        <option value='nok'>(NOK - kr)</option>
                     </select>
                 </th>
             </thead>
             <tbody></tbody>
             <tfoot>
                 <tr>
-                    <th scope="row">Totals</th>
-                    <td></td>
-                    <td></td>
-                    <td id="total_value"></td>
+                    <th scope='row'>Totals</th>
+                    <td>-</td>
+                    <td>-</td>
+                    <td headers='value' id='total_value'></td>
                 </tr>
             </tfoot>
         </table>

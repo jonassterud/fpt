@@ -113,8 +113,8 @@ tbody th[scope="row"] {
     color: var(--text-color-2);
 }
 
-tbody td[headers="amount"],
-tbody td[headers="value"] {
+td[headers="amount"],
+td[headers="value"] {
     text-align: right;
 }
 

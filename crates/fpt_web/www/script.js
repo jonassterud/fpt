@@ -62,10 +62,11 @@ async function update_values() {
 
 /// Fill table with assets.
 async function fill_table() {
-    let table = document.querySelector("main table tbody");
-    let currency = document.querySelector("#currency");
-    if (table === null || currency === null) {
-        throw Error("failed finding table || failed finding currency");
+    let table_el = document.querySelector("main table tbody");
+    let total_value_el = document.querySelector("#total_value");
+    let currency_el = document.querySelector("#currency");
+    if (table_el === null || currency_el === null || total_value_el === null) {
+        throw Error("failed finding table || failed finding currency || failed finding total_value");
     }
 
     await fetch("http://localhost:5050/get_assets")
@@ -76,21 +77,28 @@ async function fill_table() {
                 throw Error("unexpected json");
             }
 
-            table.innerHTML = "";
-
+            table_el.innerHTML = "";
             let seen_categories = [];
+            let total_value = 0;
             data.sort((a, b) => a.category < b.category);
+
+            // Loop trough assets.
             data.forEach((asset) => {
+                // Add category header.
                 if (!seen_categories.includes(asset.category)) {
                     let rowspan = data.filter((x) => x.category === asset.category).length + 1;
-                    table.innerHTML += `<th headers='category' scope='row' rowspan='${rowspan}'>${asset.category}</th>`;
+                    table_el.innerHTML += `<th headers='category' scope='row' rowspan='${rowspan}'>${asset.category}</th>`;
                     seen_categories.push(asset.category);
                 }
 
+                // Add to total value.
+                total_value += asset.value;
+
+                // Parse asset data.
                 let name = asset.name[0].toUpperCase() + asset.name.slice(1).toLowerCase();
                 let amount = undefined;
                 let code = asset.code;
-                let value = undefined;
+                let value = parse_currency(asset.value, currency_el.value);
 
                 switch (asset.category) {
                     case "Cryptocurrency":
@@ -101,27 +109,30 @@ async function fill_table() {
                         break;
                 }
 
-                switch (currency.value) {
-                    case "usd":
-                        value = asset.value.toLocaleString("en-US", { style: "currency", currency: "USD" });
-                        break;
-                    case "eur":
-                        value = asset.value.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
-                        break;
-                    case "nok":
-                        value = asset.value.toLocaleString("no-NO", { style: "currency", currency: "NOK" });
-                        break;
-                    default:
-                        throw Error("unsupported currency");
-                }
-
-                table.innerHTML += `<tr>
+                // Add asset data to table.
+                table_el.innerHTML += `<tr>
                     <td headers='name'>${name}</td>
                     <td headers='amount'>${amount} ${code}</td>
                     <td headers='value'>${value}</td>
                 </tr>`;
             });
+
+            // Display total value.
+            total_value_el.innerHTML = parse_currency(total_value, currency_el.value);
         }).catch((error) => {
             throw error;
         });
+}
+
+function parse_currency(number, currency) {
+    switch (currency) {
+        case "usd":
+            return number.toLocaleString("en-US", { style: "currency", currency: "USD" });
+        case "eur":
+            return number.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
+        case "nok":
+            return number.toLocaleString("no-NO", { style: "currency", currency: "NOK" });
+        default:
+            throw Error("unsupported currency");
+    }
 }
