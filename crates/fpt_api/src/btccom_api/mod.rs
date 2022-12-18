@@ -21,7 +21,7 @@ pub fn get_balance(address: &str) -> Result<f64> {
         .call()?
         .into_json::<serde_json::Value>()?;
 
-    let out = gv_f64("balance", gv("data", &resp)?)?;
+    let out = gv_f64("balance", gv("data", &resp)?)? / 100000000.0;
 
     Ok(out)
 }

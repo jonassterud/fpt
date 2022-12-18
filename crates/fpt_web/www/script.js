@@ -103,18 +103,9 @@ async function fill_table() {
 
                 // Parse asset data.
                 let name = asset.name[0].toUpperCase() + asset.name.slice(1).toLowerCase();
-                let amount = undefined;
+                let amount = asset.amount;
                 let code = asset.code;
                 let value = parse_currency(asset.value, currency_el.value);
-
-                switch (asset.category) {
-                    case "Cryptocurrency":
-                        amount = asset.amount / 100000000;
-                        break;
-                    default:
-                        amount = asset.amount;
-                        break;
-                }
 
                 // Add asset data to table.
                 table_el.innerHTML += `<tr>

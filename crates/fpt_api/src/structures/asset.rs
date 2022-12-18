@@ -44,7 +44,7 @@ impl Asset {
             }
             AssetCategory::Cryptocurrency => {
                 let price = currency_api::get_value(&self.code.to_lowercase(), currency)?;
-                Ok(price * (self.amount / 100000000.0))
+                Ok(price * self.amount)
             }
             AssetCategory::Unknown => Err(anyhow!("category is unknown")),
         }
