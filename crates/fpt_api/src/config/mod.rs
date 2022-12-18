@@ -11,8 +11,10 @@ pub struct Config {
     pub sparebank1_secret: String,
     /// Sparebank 1 refresh token.
     pub sparebank1_refresh_token: String,
-    /// Bitcoin addresses
+    /// Bitcoin addresses.
     pub bitcoin_addresses: Vec<String>,
+    /// Ethereum addresses.
+    pub ethereum_addresses: Vec<String>,
 }
 
 impl Config {

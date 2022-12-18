@@ -2,6 +2,7 @@ mod btccom_api;
 mod config;
 mod currency_api;
 mod database;
+mod ethplorer_api;
 mod paths;
 mod sparebank1_api;
 mod structures;
