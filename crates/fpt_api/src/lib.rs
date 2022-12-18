@@ -23,6 +23,7 @@ pub async fn start() -> Result<()> {
 
         App::new()
             .wrap(cors)
+            .wrap(Logger::default())
             .service(paths::get_assets)
             .service(paths::update_assets)
     })
