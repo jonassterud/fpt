@@ -26,8 +26,10 @@ pub struct Asset {
     pub code: String,
     /// Amount.
     pub amount: f64,
-    /// Value.
-    pub value: Option<f64>,
+    /// Value in USD.
+    pub value_usd: Option<f64>,
+    /// Value in the given currency.
+    pub value_in_currency: Option<f64>,
 }
 
 impl Asset {
@@ -58,7 +60,8 @@ impl Default for Asset {
             name: String::new(),
             code: String::new(),
             amount: 0.0,
-            value: None,
+            value_usd: None,
+            value_in_currency: None,
         }
     }
 }

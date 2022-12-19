@@ -26,7 +26,8 @@ pub async fn update_assets() -> impl Responder {
                 name: "Bitcoin".to_string(),
                 code: "BTC".to_string(),
                 amount: btccom_api::get_balance(&bitcoin_address)?,
-                value: None,
+                value_usd: None,
+                value_in_currency: None,
             });
         }
 
@@ -37,7 +38,8 @@ pub async fn update_assets() -> impl Responder {
                 name: "Ethereum".to_string(),
                 code: "ETH".to_string(),
                 amount: ethplorer_api::get_balance(&ethereum_address)?,
-                value: None,
+                value_usd: None,
+                value_in_currency: None,
             });
         }
 

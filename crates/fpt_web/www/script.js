@@ -56,12 +56,7 @@ async function update_assets() {
 
 /// Update asset values.
 async function update_values() {
-    let currency = document.querySelector("#currency");
-    if (currency === null) {
-        throw Error("failed finding currency");
-    }
-
-    await fetch(`http://localhost:5050/update_values/${currency.value}`)
+    await fetch(`http://localhost:5050/update_values`)
         .catch((error) => {
             throw error;
         });
@@ -76,7 +71,7 @@ async function fill_table() {
         throw Error("failed finding table || failed finding currency || failed finding total_value");
     }
 
-    await fetch("http://localhost:5050/get_assets")
+    await fetch(`http://localhost:5050/get_assets/${currency_el.value}`)
         .then((resp) => {
             return resp.json();
         }).then((data) => {
@@ -99,13 +94,13 @@ async function fill_table() {
                 }
 
                 // Add to total value.
-                total_value += asset.value;
+                total_value += asset.value_in_currency;
 
                 // Parse asset data.
                 let name = asset.name[0].toUpperCase() + asset.name.slice(1).toLowerCase();
                 let amount = asset.amount;
                 let code = asset.code;
-                let value = parse_currency(asset.value, currency_el.value);
+                let value = parse_currency(asset.value_in_currency, currency_el.value);
 
                 // Add asset data to table.
                 table_el.innerHTML += `<tr>

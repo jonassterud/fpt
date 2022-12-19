@@ -28,6 +28,8 @@ pub async fn start() -> Result<()> {
             .service(paths::get_assets)
             .service(paths::update_assets)
             .service(paths::update_values)
+            .service(paths::get_pits)
+            .service(paths::save_pit)
     })
     .bind(("localhost", 5050))?
     .run()
