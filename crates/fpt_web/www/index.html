@@ -6,6 +6,7 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <link rel='stylesheet' href='style.css'>
+    <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
     <script src='script.js'></script>
     <title>fpt</title>
 </head>
@@ -45,9 +46,12 @@
                 </tr>
             </tfoot>
         </table>
+        <div id='pit-graph-wrapper'>
+            <canvas id='pit-graph'></canvas>
+        </div>
     </main>
     <footer>
-        <a href='?hard_load'>full reload</a>
+        <a href='/?hard_load'>full reload</a>
         <a href='https://github.com/jonassterud/fpt' target='_blank'>source code</a>
     </footer>
 </body>

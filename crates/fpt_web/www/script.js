@@ -14,6 +14,7 @@ async function soft_load() {
     try {
         await update_values();
         await fill_table();
+        await fill_pit_graph();
 
         if (document.querySelector("table tbody").innerHTML === "") {
             let message = "No assets were found in the local database.<br>Do you want to remotely load assets?";
@@ -124,6 +125,8 @@ async function fill_table() {
 
 /// Parse currency in locale of currency.
 function parse_currency(number, currency) {
+    number = Number.parseFloat(number);
+
     switch (currency) {
         case "usd":
             return number.toLocaleString("en-US", { style: "currency", currency: "USD" });
@@ -134,6 +137,11 @@ function parse_currency(number, currency) {
         default:
             throw Error("unsupported currency");
     }
+}
+
+/// Parse date in locale.
+function parse_date(date) {
+    return date.toLocaleString();
 }
 
 /// Prompt user (yes or no).
@@ -164,4 +172,50 @@ async function fancy_prompt(message) {
     document.querySelector("#fancy-prompt").remove();
 
     return result;
+}
+
+/// Fill PIT-graph
+async function fill_pit_graph() {
+    let pit_graph_el = document.querySelector("#pit-graph");
+    let currency_el = document.querySelector("#currency");
+    if (pit_graph_el === null || currency_el === null) {
+        throw Error("failed finding pit graph || failed finding currency");
+    }
+
+    await fetch(`http://localhost:5050/get_pits/${currency_el.value}`)
+        .then((resp) => {
+            return resp.json();
+        }).then((data) => {
+            if (typeof data != typeof []) {
+                throw Error("unexpected json");
+            }
+
+            data.sort((a, b) => a - b);
+            let data_values = data.map((x) => x.total_value_in_currency);
+            let data_labels = data.map((x) => parse_date(new Date(x.time * 1000)));
+
+            let tmpChart = Chart.getChart("pit-graph");
+            if (tmpChart) {
+                tmpChart.destroy()
+            }
+
+            new Chart(pit_graph_el, {
+                type: "line",
+                data: {
+                    labels: data_labels,
+                    datasets: [{
+                        label: `Total value (${currency_el.value})`,
+                        data: data_values,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        });
 }
