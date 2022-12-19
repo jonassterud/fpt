@@ -1,5 +1,3 @@
-use crate::currency_api;
-use anyhow::{anyhow, Result};
 use serde::{Deserialize, Serialize};
 
 /// Enum of asset categories.
@@ -30,27 +28,6 @@ pub struct Asset {
     pub value_usd: Option<f64>,
     /// Value in the given currency.
     pub value_in_currency: Option<f64>,
-}
-
-impl Asset {
-    /// Get value of asset in the given currency.
-    pub fn get_value(&self, currency: &str) -> Result<f64> {
-        match self.category {
-            AssetCategory::Stock => {
-                // ...
-                Err(anyhow!("not implemented yet"))
-            }
-            AssetCategory::Currency => {
-                let price = currency_api::get_value(&self.code.to_lowercase(), currency)?;
-                Ok(price * self.amount)
-            }
-            AssetCategory::Cryptocurrency => {
-                let price = currency_api::get_value(&self.code.to_lowercase(), currency)?;
-                Ok(price * self.amount)
-            }
-            AssetCategory::Unknown => Err(anyhow!("category is unknown")),
-        }
-    }
 }
 
 impl Default for Asset {

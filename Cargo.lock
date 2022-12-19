@@ -529,12 +529,34 @@ dependencies = [
  "actix-cors",
  "actix-web",
  "anyhow",
+ "fpt_bindings",
+ "fpt_common",
  "rusqlite",
  "serde",
  "serde_json",
  "tokio",
  "toml",
  "ureq",
+]
+
+[[package]]
+name = "fpt_bindings"
+version = "0.0.0"
+dependencies = [
+ "anyhow",
+ "fpt_common",
+ "serde",
+ "serde_json",
+ "ureq",
+]
+
+[[package]]
+name = "fpt_common"
+version = "0.0.0"
+dependencies = [
+ "anyhow",
+ "serde",
+ "toml",
 ]
 
 [[package]]

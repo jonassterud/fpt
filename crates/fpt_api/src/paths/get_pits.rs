@@ -1,6 +1,8 @@
-use crate::{currency_api, Database};
 use actix_web::{get, web, Responder};
 use anyhow::Result;
+
+use crate::Database;
+use fpt_bindings::*;
 
 /// Get PITs from the database.
 #[get("/get_pits/{currency}")]
@@ -12,7 +14,7 @@ pub async fn get_pits(currency: web::Path<String>) -> impl Responder {
         for pit in &mut pits {
             let total_value_usd = pit.total_value_usd;
             pit.total_value_in_currency =
-                Some(total_value_usd * currency_api::get_value("usd", &currency)?);
+                Some(total_value_usd * currency::get_value("usd", &currency)?);
         }
 
         Ok(serde_json::to_string(&pits)?)

@@ -1,6 +1,9 @@
-use crate::{btccom_api, config::Config, ethplorer_api, sparebank1_api, structures, Database};
 use actix_web::{get, Responder};
 use anyhow::Result;
+
+use crate::Database;
+use fpt_bindings::*;
+use fpt_common::*;
 
 /// Updates assets and adds them to the database.
 #[get("/update_assets")]
@@ -16,16 +19,16 @@ pub async fn update_assets() -> impl Responder {
             && !config.sparebank1_secret.is_empty()
             && !config.sparebank1_refresh_token.is_empty()
         {
-            assets.append(&mut sparebank1_api::get_assets(&mut config)?);
+            assets.append(&mut sparebank1::get_assets(&mut config)?);
         }
 
         // Load Bitcoin assets
         for bitcoin_address in config.bitcoin_addresses {
-            assets.push(structures::Asset {
-                category: structures::AssetCategory::Cryptocurrency,
+            assets.push(Asset {
+                category: AssetCategory::Cryptocurrency,
                 name: "Bitcoin".to_string(),
                 code: "BTC".to_string(),
-                amount: btccom_api::get_balance(&bitcoin_address)?,
+                amount: btccom::get_balance(&bitcoin_address)?,
                 value_usd: None,
                 value_in_currency: None,
             });
@@ -33,11 +36,11 @@ pub async fn update_assets() -> impl Responder {
 
         // Load Ethereum assets
         for ethereum_address in config.ethereum_addresses {
-            assets.push(structures::Asset {
-                category: structures::AssetCategory::Cryptocurrency,
+            assets.push(Asset {
+                category: AssetCategory::Cryptocurrency,
                 name: "Ethereum".to_string(),
                 code: "ETH".to_string(),
-                amount: ethplorer_api::get_balance(&ethereum_address)?,
+                amount: ethplorer::get_balance(&ethereum_address)?,
                 value_usd: None,
                 value_in_currency: None,
             });

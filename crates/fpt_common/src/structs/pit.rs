@@ -1,4 +1,3 @@
-use super::Asset;
 use anyhow::Result;
 use serde::{Deserialize, Serialize};
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -16,12 +15,7 @@ pub struct Pit {
 
 impl Pit {
     /// Create point in time.
-    pub fn new(assets: &Vec<Asset>) -> Result<Self> {
-        let mut total_value_usd = 0.0;
-        for asset in assets {
-            total_value_usd += asset.get_value("usd")?;
-        }
-
+    pub fn new(total_value_usd: f64) -> Result<Self> {
         Ok(Self {
             time: SystemTime::now().duration_since(UNIX_EPOCH)?.as_secs(),
             total_value_usd,

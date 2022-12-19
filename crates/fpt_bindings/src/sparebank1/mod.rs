@@ -1,32 +1,7 @@
-use crate::{config::Config, structures};
-use anyhow::{anyhow, Result};
+use anyhow::Result;
 
-/// Get value from `serde_json::Value` as a `&serde_json::Value`.
-fn gv<'a>(key: &str, val: &'a serde_json::Value) -> Result<&'a serde_json::Value> {
-    val.get(key)
-        .ok_or_else(|| anyhow!("value is missing {key}"))
-}
-
-/// Get value from `serde_json::Value` as a `&str`.
-fn gv_str<'a>(key: &str, val: &'a serde_json::Value) -> Result<&'a str> {
-    gv(key, val)?
-        .as_str()
-        .ok_or_else(|| anyhow!("value is not a str"))
-}
-
-/// Get value from `serde_json::Value` as a `&Vec<serde_json::Value>`.
-fn gv_vec<'a>(key: &str, val: &'a serde_json::Value) -> Result<&'a Vec<serde_json::Value>> {
-    gv(key, val)?
-        .as_array()
-        .ok_or_else(|| anyhow!("value is not an array"))
-}
-
-/// Get value from `serde_json::Value` as a `&f64`.
-fn gv_f64(key: &str, val: &serde_json::Value) -> Result<f64> {
-    gv(key, val)?
-        .as_f64()
-        .ok_or_else(|| anyhow!("value is not a f64"))
-}
+use crate::common::*;
+use fpt_common::*;
 
 /// Get access token from refresh token.
 pub fn get_access_token(config: &mut Config) -> Result<String> {
@@ -49,8 +24,8 @@ pub fn get_access_token(config: &mut Config) -> Result<String> {
     Ok(new_access_token.to_string())
 }
 
-/// Get Sparebank 1 accounts and transform them into vector of [`structures::Asset`].
-pub fn get_assets(config: &mut Config) -> Result<Vec<structures::Asset>> {
+/// Get Sparebank 1 accounts and transform them into vector of [`Asset`].
+pub fn get_assets(config: &mut Config) -> Result<Vec<Asset>> {
     let mut out = vec![];
 
     let resp = ureq::get("https://api.sparebank1.no/personal/banking/accounts")
@@ -70,8 +45,8 @@ pub fn get_assets(config: &mut Config) -> Result<Vec<structures::Asset>> {
         let balance = gv_f64("balance", account)?;
         let currency = gv_str("currencyCode", account)?;
 
-        out.push(structures::Asset {
-            category: structures::AssetCategory::Currency,
+        out.push(Asset {
+            category: AssetCategory::Currency,
             name: name.to_string(),
             code: currency.to_string(),
             amount: balance,

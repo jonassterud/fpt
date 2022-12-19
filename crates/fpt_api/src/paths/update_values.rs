@@ -1,6 +1,8 @@
-use crate::Database;
 use actix_web::{get, Responder};
 use anyhow::Result;
+
+use crate::Database;
+use fpt_bindings::*;
 
 /// Updates assets and adds them to the database.
 #[get("/update_values")]
@@ -11,7 +13,8 @@ pub async fn update_values() -> impl Responder {
 
         db.clear_assets()?;
         for asset in &mut assets {
-            asset.value_usd = Some(asset.get_value("usd")?);
+            asset.value_usd =
+                Some(currency::get_value(&asset.code.to_lowercase(), "usd")? * asset.amount);
             db.add_asset(asset)?;
         }
 
