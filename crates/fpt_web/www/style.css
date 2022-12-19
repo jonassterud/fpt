@@ -62,10 +62,11 @@ main {
     padding: 0;
 
     width: 100%;
-    height: auto;
+    height: 100%;
 
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 
     font-family: inherit;
     font-size: inherit;
@@ -181,4 +182,18 @@ footer a {
     padding: 10px 20px 10px 20px;
 
     cursor: pointer;
+}
+
+/* PIT-graph styling */
+
+#pit-graph-wrapper {
+    position: relative;
+
+    display: flex;
+    justify-content: center;
+
+    width: 70%;
+    height: 50%;
+
+    padding: 10px 0 0 0;
 }

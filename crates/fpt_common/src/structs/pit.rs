@@ -10,6 +10,7 @@ pub struct Pit {
     /// Total value of assets.
     pub total_value_usd: f64,
     /// Total value in currency.
+    #[serde(skip_deserializing)]
     pub total_value_in_currency: Option<f64>,
 }
 
