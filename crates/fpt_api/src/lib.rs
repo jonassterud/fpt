@@ -23,6 +23,7 @@ pub async fn start() -> Result<()> {
             .service(paths::update_values)
             .service(paths::get_pits)
             .service(paths::save_pit)
+            .service(paths::remove_pit)
     })
     .bind(("localhost", 5050))?
     .run()
