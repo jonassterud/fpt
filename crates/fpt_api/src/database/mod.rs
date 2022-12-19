@@ -1,6 +1,7 @@
-use crate::structures;
 use anyhow::{anyhow, Result};
 use rusqlite::{Connection, ToSql};
+
+use fpt_common::*;
 
 /// SQLite Database.
 pub struct Database {
@@ -42,7 +43,7 @@ impl Database {
     }
 
     /// Add [`structures::Asset`] to database.
-    pub fn add_asset(&self, asset: &structures::Asset) -> Result<()> {
+    pub fn add_asset(&self, asset: &Asset) -> Result<()> {
         self.get_connection()?.execute(
             "INSERT INTO assets (data) VALUES (?1)",
             [&serde_json::to_value(asset)? as &dyn ToSql],
@@ -52,13 +53,13 @@ impl Database {
     }
 
     /// Get [`Vec<structures::Asset>`] from database.
-    pub fn get_assets(&self) -> Result<Vec<structures::Asset>> {
+    pub fn get_assets(&self) -> Result<Vec<Asset>> {
         let mut out = vec![];
 
         let mut stmt = self.get_connection()?.prepare("SELECT data FROM assets")?;
         let assets_iter = stmt.query_map([], |row| {
             let json_value = row.get::<usize, serde_json::Value>(0)?;
-            let asset_value = serde_json::from_value::<structures::Asset>(json_value);
+            let asset_value = serde_json::from_value::<Asset>(json_value);
 
             Ok(asset_value)
         })?;
@@ -78,7 +79,7 @@ impl Database {
     }
 
     /// Add [`structures::Pit`] to database.
-    pub fn add_pit(&self, pit: structures::Pit) -> Result<()> {
+    pub fn add_pit(&self, pit: Pit) -> Result<()> {
         self.get_connection()?.execute(
             "INSERT INTO pits (data) VALUES (?1)",
             [&serde_json::to_value(pit)? as &dyn ToSql],
@@ -88,13 +89,13 @@ impl Database {
     }
 
     /// Get [`Vec<structures::Asset>`] from database.
-    pub fn get_pits(&self) -> Result<Vec<structures::Pit>> {
+    pub fn get_pits(&self) -> Result<Vec<Pit>> {
         let mut out = vec![];
 
         let mut stmt = self.get_connection()?.prepare("SELECT data FROM pits")?;
         let assets_iter = stmt.query_map([], |row| {
             let json_value = row.get::<usize, serde_json::Value>(0)?;
-            let asset_value = serde_json::from_value::<structures::Pit>(json_value);
+            let asset_value = serde_json::from_value::<Pit>(json_value);
 
             Ok(asset_value)
         })?;

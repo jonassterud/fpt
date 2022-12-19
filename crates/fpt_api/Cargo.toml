@@ -8,6 +8,9 @@ repository = "https://github.com/jonassterud/fpt"
 license = "MIT"
 
 [dependencies]
+fpt_common = { path = "../fpt_common" }
+fpt_bindings = { path = "../fpt_bindings" }
+
 tokio = { version = "1.23", features = ["rt", "macros", "net"] }
 anyhow = { version = "1.0", features = [] }
 
