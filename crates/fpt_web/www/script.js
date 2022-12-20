@@ -14,7 +14,6 @@ async function soft_load() {
     try {
         await update_values();
         await fill_table();
-        await fill_pit_graph();
 
         if (document.querySelector("table tbody").innerHTML === "") {
             // console.timeEnd("soft load"); // doesn't work?
@@ -24,6 +23,8 @@ async function soft_load() {
                 return hard_load();
             }
         }
+
+        await fill_pit_graph();
     }
     catch (error) {
         console.error(error);
