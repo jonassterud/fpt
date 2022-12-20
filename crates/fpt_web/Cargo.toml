@@ -12,5 +12,9 @@ tokio = { version = "1.23", features = ["rt", "macros", "net"] }
 anyhow = { version = "1.0", features = [] }
 
 actix-web = { version = "4.2", features = [] }
-actix-files = { version = "0.6", features = [] }
+actix-web-static-files = { version = "4.0", features = [] }
+static-files = { version = "0.2", features = [] }
 actix-cors = { version = "0.6", features = [] }
+
+[build-dependencies]
+static-files = { version = "0.2", features = [] }
