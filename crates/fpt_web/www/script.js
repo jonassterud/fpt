@@ -17,7 +17,7 @@ async function soft_load() {
         await fill_pit_graph();
 
         if (document.querySelector("table tbody").innerHTML === "") {
-            console.timeEnd("soft load");
+            // console.timeEnd("soft load"); // doesn't work?
 
             let message = "No assets were found in the local database.<br>Do you want to remotely load assets?";
             if (await fancy_prompt(message) === true) {
