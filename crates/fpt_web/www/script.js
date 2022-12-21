@@ -1,10 +1,5 @@
 window.onload = () => {
-    try {
-        load(true);
-    }
-    catch (error) {
-        console.error(error);
-    }
+    load(true);
 }
 
 /**
@@ -34,7 +29,7 @@ async function load(soft = true) {
         }
     }
     catch (error) {
-        throw error;
+        console.error(error);
     }
     finally {
         console.timeEnd(`${soft ? 'soft' : 'hard'} load`);
