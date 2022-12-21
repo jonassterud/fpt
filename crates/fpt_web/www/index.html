@@ -7,7 +7,10 @@
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <link rel='stylesheet' href='style.css'>
     <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
-    <script src='script.js'></script>
+    <script src='scripts/common.js'></script>
+    <script src='scripts/bindings.js'></script>
+    <script src='scripts/charts.js'></script>
+    <script src='scripts/main.js'></script>
     <title>fpt</title>
 </head>
 
@@ -46,12 +49,13 @@
                 </tr>
             </tfoot>
         </table>
-        <div id='pit-graph-wrapper'>
-            <canvas id='pit-graph'></canvas>
+        <div id='charts'>
+            <div><canvas id='allocation-chart'></canvas></div>
+            <div><canvas id='pit-chart'></canvas></div>
         </div>
     </main>
     <footer>
-        <button onclick='load(false)'>full reload</button>
+        <a onclick='load(false)'>full reload</a>
         <a href='https://github.com/jonassterud/fpt' target='_blank'>source code</a>
     </footer>
 </body>
