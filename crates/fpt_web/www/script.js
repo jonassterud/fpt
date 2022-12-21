@@ -1,52 +1,35 @@
 /// Determine whether to call hard/soft load based on search params.
 window.onload = () => {
-    if (new URL(window.location).searchParams.has("hard_load")) {
-        hard_load();
-    } else {
-        soft_load();
-    }
+    load(true);
 }
 
 /// Update asset values and refill table.
-async function soft_load() {
-    console.time("soft load");
+async function load(soft = true) {
+    console.time(`${soft ? 'soft' : 'hard'} load`);
 
     try {
-        await update_values();
-        await fill_table();
-
-        if (document.querySelector("table tbody").innerHTML === "") {
-            // console.timeEnd("soft load"); // doesn't work?
-
-            let message = "No assets were found in the local database.<br>Do you want to remotely load assets?";
-            if (await fancy_prompt(message) === true) {
-                return hard_load();
-            }
+        if (soft) {
+            await update_values();
+            await fill_table().then(async (amount) => {
+                let message = "No assets were found in the local database.<br>Do you want to remotely load assets?";
+                if (amount === 0 && await fancy_prompt(message) === true) {
+                    // console.timeEnd(`${soft ? 'soft' : 'hard'} load`); // doesn't work?
+                    load(false);
+                } else {
+                    await save_pit();
+                    await fill_pit_graph();
+                }
+            });
+        } else {
+            await update_assets();
+            load(true);
         }
-
-        await fill_pit_graph();
     }
     catch (error) {
         console.error(error);
     }
     finally {
-        console.timeEnd("soft load");
-    }
-}
-
-/// Update assets and then call soft_load by removing search params.
-async function hard_load() {
-    console.time("hard load");
-
-    try {
-        await update_assets();
-        window.location.search = "";
-    }
-    catch (error) {
-        console.error(error);
-    }
-    finally {
-        console.timeEnd("hard load");
+        console.timeEnd(`${soft ? 'soft' : 'hard'} load`);
     }
 }
 
@@ -60,12 +43,15 @@ async function update_assets() {
 
 /// Update asset values.
 async function update_values() {
-    await fetch(`http://localhost:5050/update_values`)
+    await fetch("http://localhost:5050/update_values")
         .catch((error) => {
             throw error;
         });
+}
 
-    await fetch(`http://localhost:5050/save_pit`)
+/// Save PIT
+async function save_pit() {
+    await fetch("http://localhost:5050/save_pit")
         .catch((error) => {
             throw error;
         });
@@ -80,6 +66,8 @@ async function fill_table() {
         throw Error("failed finding table || failed finding currency || failed finding total_value");
     }
 
+    let amount_of_assets = 0;
+
     await fetch(`http://localhost:5050/get_assets/${currency_el.value}`)
         .then((resp) => {
             return resp.json();
@@ -87,6 +75,8 @@ async function fill_table() {
             if (typeof data != typeof []) {
                 throw Error("unexpected json");
             }
+
+            amount_of_assets = data.length;
 
             table_el.innerHTML = "";
             let seen_categories = [];
@@ -124,6 +114,8 @@ async function fill_table() {
         }).catch((error) => {
             throw error;
         });
+
+    return amount_of_assets;
 }
 
 /// Parse currency in locale of currency.
