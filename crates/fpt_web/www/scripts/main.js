@@ -1,7 +1,3 @@
-window.onload = () => {
-    load(true);
-}
-
 /**
  * Load everything.
  * @param {bool} soft - whether to load assets remotely (*hard load*) or locally (*soft load*).
