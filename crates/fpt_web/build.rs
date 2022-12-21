@@ -10,7 +10,7 @@ fn minify_files(
 ) -> Result<()> {
     let current_path = current_path.unwrap_or(from_directory);
 
-    if !Path::new(to_directory).try_exists()? {
+    if !Path::new(to_directory).exists() {
         fs::create_dir_all(to_directory)?;
     }
 
@@ -29,7 +29,7 @@ fn minify_files(
 
         // Create subdirectories if needed.
         if let Some(parent) = new_path.parent() {
-            if !parent.try_exists()? {
+            if !parent.exists() {
                 fs::create_dir_all(parent)?;
             }
         }
