@@ -12,12 +12,12 @@ async function load(soft = true) {
 
     try {
         if (soft) {
-            const currency_el = document.querySelector("#currency");
-            if (currency_el === null) {
+            const currency = document.getElementById("#currency")?.value;
+            if (currency === undefined) {
                 throw Error("failed finding #currency");
             }
 
-            const assets = await get_assets(currency_el.value);
+            const assets = await get_assets(currency);
             if (
                 assets.length === 0 &&
                 await fancy_prompt("No assets were found in the local database.<br>Do you want to remotely load assets?") === true
@@ -27,12 +27,12 @@ async function load(soft = true) {
             } else {
                 await update_values();
                 await Promise.all([
-                    fill_table(assets, currency_el.value),
+                    fill_table(assets, currency),
                     save_pit()
                 ]);
                 await Promise.all([
-                    fill_pit_chart(await get_pits(currency_el.value), currency_el.value),
-                    fill_allocation_chart(assets, currency_el.value)
+                    fill_pit_chart(await get_pits(currency), currency),
+                    fill_allocation_chart(assets, currency)
                 ]);
             }
         } else {
@@ -56,7 +56,7 @@ async function load(soft = true) {
  */
 async function fill_table(data, currency) {
     const table_el = document.querySelector("main table tbody");
-    const total_value_el = document.querySelector("#total_value");
+    const total_value_el = document.getElementById("#total_value");
     if (table_el === null || total_value_el === null) {
         throw Error("failed finding main table tbody  || failed finding #total_value");
     }
@@ -115,17 +115,17 @@ async function fancy_prompt(message) {
     `;
 
     const button_promise = new Promise((resolve) => {
-        document.querySelector("#yes-button").addEventListener("click", () => {
+        document.getElementById("#yes-button").addEventListener("click", () => {
             resolve(true);
         })
 
-        document.querySelector("#no-button").addEventListener("click", () => {
+        document.getElementById("#no-button").addEventListener("click", () => {
             resolve(false);
         });
     });
 
     const result = await button_promise;
-    document.querySelector("#fancy-prompt").remove();
+    document.getElementById("#fancy-prompt").remove();
 
     return result;
 }
