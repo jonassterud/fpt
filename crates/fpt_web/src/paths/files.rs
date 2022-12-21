@@ -1,8 +1,7 @@
-use actix_files::Files;
+use actix_web_static_files::ResourceFiles;
 
-pub fn www() -> Files {
-    const DIR: &str = "./crates/fpt_web/www/";
-    const INDEX: &str = "index.html";
+include!(concat!(env!("OUT_DIR"), "/generated.rs"));
 
-    Files::new("/", DIR).index_file(INDEX)
+pub fn www() -> ResourceFiles {
+    ResourceFiles::new("/", generate())
 }

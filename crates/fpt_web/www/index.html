@@ -25,7 +25,7 @@
                 <th scope='col' id='amount'>Amount</th>
                 <th scope='col' id='value'>
                     <label for='currency'>Value</label>
-                    <select name='currency' id='currency' onchange='soft_load()'>
+                    <select name='currency' id='currency' onchange='load(true)'>
                         <option value='usd' selected>(USD - $)</option>
                         <option value='eur'>(EUR - €)</option>
                         <option value='nok'>(NOK - kr)</option>
@@ -51,7 +51,7 @@
         </div>
     </main>
     <footer>
-        <a href='/?hard_load'>full reload</a>
+        <button onclick='load(false)'>full reload</button>
         <a href='https://github.com/jonassterud/fpt' target='_blank'>source code</a>
     </footer>
 </body>

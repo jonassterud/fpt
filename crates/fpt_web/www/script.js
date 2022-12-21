@@ -1,53 +1,45 @@
-/// Determine whether to call hard/soft load based on search params.
 window.onload = () => {
-    if (new URL(window.location).searchParams.has("hard_load")) {
-        hard_load();
-    } else {
-        soft_load();
-    }
+    load(true);
 }
 
-/// Update asset values and refill table.
-async function soft_load() {
-    console.time("soft load");
+/**
+ * Load everything.
+ * @param {bool} soft - whether to load assets remotely (*hard load*) or locally (*soft load*).
+ * @returns {Promise<void>} nothing.
+ */
+async function load(soft = true) {
+    console.time(`${soft ? 'soft' : 'hard'} load`);
 
     try {
-        await update_values();
-        await fill_table();
-        await fill_pit_graph();
-
-        if (document.querySelector("table tbody").innerHTML === "") {
-            let message = "No assets were found in the local database.<br>Do you want to remotely load assets?";
-            if (await fancy_prompt(message) === true) {
-                return hard_load();
-            }
+        if (soft) {
+            await update_values();
+            await fill_table().then(async (amount) => {
+                let message = "No assets were found in the local database.<br>Do you want to remotely load assets?";
+                if (amount === 0 && await fancy_prompt(message) === true) {
+                    // console.timeEnd(`${soft ? 'soft' : 'hard'} load`); // doesn't work?
+                    load(false);
+                } else {
+                    await save_pit();
+                    await fill_pit_graph();
+                }
+            });
+        } else {
+            await update_assets();
+            load(true);
         }
     }
     catch (error) {
         console.error(error);
     }
     finally {
-        console.timeEnd("soft load");
+        console.timeEnd(`${soft ? 'soft' : 'hard'} load`);
     }
 }
 
-/// Update assets and then call soft_load by removing search params.
-async function hard_load() {
-    console.time("hard load");
-
-    try {
-        await update_assets();
-        window.location.search = "";
-    }
-    catch (error) {
-        console.error(error);
-    }
-    finally {
-        console.timeEnd("hard load");
-    }
-}
-
-/// Update assets.
+/**
+ * Update assets.
+ * @returns {Promise<void>} nothing.
+ */
 async function update_assets() {
     await fetch("http://localhost:5050/update_assets")
         .catch((error) => {
@@ -55,20 +47,32 @@ async function update_assets() {
         });
 }
 
-/// Update asset values.
+/**
+ * Update asset values.
+ * @returns {Promise<void>} nothing.
+ */
 async function update_values() {
-    await fetch(`http://localhost:5050/update_values`)
-        .catch((error) => {
-            throw error;
-        });
-
-    await fetch(`http://localhost:5050/save_pit`)
+    await fetch("http://localhost:5050/update_values")
         .catch((error) => {
             throw error;
         });
 }
 
-/// Fill table with assets.
+/**
+ * Save PIT.
+ * @returns {Promise<void>} nothing.
+ */
+async function save_pit() {
+    await fetch("http://localhost:5050/save_pit")
+        .catch((error) => {
+            throw error;
+        });
+}
+
+/**
+ * Fill table with assets.
+ * @returns {Promise<Number>} amount of assets loaded.
+ */
 async function fill_table() {
     let table_el = document.querySelector("main table tbody");
     let total_value_el = document.querySelector("#total_value");
@@ -77,13 +81,18 @@ async function fill_table() {
         throw Error("failed finding table || failed finding currency || failed finding total_value");
     }
 
+    let amount_of_assets = 0;
+
     await fetch(`http://localhost:5050/get_assets/${currency_el.value}`)
         .then((resp) => {
             return resp.json();
-        }).then((data) => {
+        })
+        .then((data) => {
             if (typeof data != typeof []) {
                 throw Error("unexpected json");
             }
+
+            amount_of_assets = data.length;
 
             table_el.innerHTML = "";
             let seen_categories = [];
@@ -118,12 +127,20 @@ async function fill_table() {
 
             // Display total value.
             total_value_el.innerHTML = parse_currency(total_value, currency_el.value);
-        }).catch((error) => {
+        })
+        .catch((error) => {
             throw error;
         });
+
+    return amount_of_assets;
 }
 
-/// Parse currency in locale of currency.
+/**
+ * Parse number as a currency in relevant locale.
+ * @param {String} number - number to parse.
+ * @param {String} currency - currency code in lowercase.
+ * @returns {Promise<String>} parsed currency.
+ */
 function parse_currency(number, currency) {
     number = Number.parseFloat(number);
 
@@ -139,12 +156,20 @@ function parse_currency(number, currency) {
     }
 }
 
-/// Parse date in locale.
+/**
+ * Parse data in locale.
+ * @param {Date} date - date to parse
+ * @returns {String} parsed date.
+ */
 function parse_date(date) {
     return date.toLocaleString();
 }
 
-/// Prompt user (yes or no).
+/**
+ * Prompt user with a question.
+ * @param {String} message - question to ask user.
+ * @returns {Promise<bool>} user response.
+ */
 async function fancy_prompt(message) {
     document.body.innerHTML += `
         <div id="fancy-prompt">
@@ -158,7 +183,7 @@ async function fancy_prompt(message) {
         </div>
     `;
 
-    let button_promise = new Promise(function (resolve, _) {
+    let button_promise = new Promise((resolve) => {
         document.querySelector("#yes-button").addEventListener("click", () => {
             resolve(true);
         })
@@ -174,7 +199,10 @@ async function fancy_prompt(message) {
     return result;
 }
 
-/// Fill PIT-graph
+/**
+ * Fill PIT graph.
+ * @returns {Promise<void>} nothing.
+ */
 async function fill_pit_graph() {
     let pit_graph_el = document.querySelector("#pit-graph");
     let currency_el = document.querySelector("#currency");
@@ -185,7 +213,8 @@ async function fill_pit_graph() {
     await fetch(`http://localhost:5050/get_pits/${currency_el.value}`)
         .then((resp) => {
             return resp.json();
-        }).then((data) => {
+        })
+        .then((data) => {
             if (typeof data != typeof []) {
                 throw Error("unexpected json");
             }
@@ -217,5 +246,8 @@ async function fill_pit_graph() {
                     }
                 }
             });
-        });
+        })
+        .catch((error) => {
+            throw error;
+        })
 }
