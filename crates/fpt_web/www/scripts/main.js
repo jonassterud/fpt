@@ -14,7 +14,7 @@ async function load(soft = true) {
         if (soft) {
             let currency_el = document.querySelector("#currency");
             if (currency_el === null) {
-                throw Error("failed finding currency");
+                throw Error("failed finding #currency");
             }
 
             let assets = await get_assets(currency_el.value);
@@ -26,10 +26,14 @@ async function load(soft = true) {
                 load(false);
             } else {
                 await update_values();
-                await fill_table(assets, currency_el.value);
-                await save_pit();
-                await fill_pit_chart();
-                await fill_allocation_chart(assets);
+                await Promise.all([
+                    fill_table(assets, currency_el.value),
+                    save_pit()
+                ]);
+                await Promise.all([
+                    fill_pit_chart(await get_pits(currency_el.value), currency_el.value),
+                    fill_allocation_chart(assets, currency_el.value)
+                ]);
             }
         } else {
             await update_assets();
@@ -54,7 +58,7 @@ async function fill_table(data, currency) {
     let table_el = document.querySelector("main table tbody");
     let total_value_el = document.querySelector("#total_value");
     if (table_el === null || total_value_el === null) {
-        throw Error("failed finding table  || failed finding total_value");
+        throw Error("failed finding main table tbody  || failed finding #total_value");
     }
 
     table_el.innerHTML = "";

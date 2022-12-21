@@ -1,30 +1,30 @@
 /**
  * Fill allocation chart.
  * @param {Array<Object>} data - array of assets.
+ * @param {String} currency - lowercase currency code.
  * @returns {Promise<void>} nothing.
  */
-async function fill_allocation_chart(data) {
+async function fill_allocation_chart(data, currency) {
     let allocation_chart_el = document.querySelector("#allocation-chart");
-    let currency_el = document.querySelector("#currency");
-    if (allocation_chart_el === null || currency_el === null) {
-        throw Error("failed finding pit chart || failed finding currency");
+    if (allocation_chart_el === null) {
+        throw Error("failed finding #allocation-chart");
     }
 
-    let temp = {}
+    let tempObject = {}
     data.forEach((x) => {
-        if (temp.hasOwnProperty(x.category)) {
-            temp[x.category] += x.value_in_currency;
+        if (tempObject.hasOwnProperty(x.category)) {
+            tempObject[x.category] += x.value_in_currency;
         } else {
-            temp[x.category] = 0;
+            tempObject[x.category] = 0;
         }
     });
 
-    let data_values = Object.entries(temp).map((x) => x[1]);
-    let data_labels = Object.entries(temp).map((x) => x[0]);
+    let data_values = Object.entries(tempObject).map((x) => x[1]);
+    let data_labels = Object.entries(tempObject).map((x) => x[0]);
 
-    let tmpChart = Chart.getChart("allocation-chart");
-    if (tmpChart) {
-        tmpChart.destroy()
+    let tempChart = Chart.getChart("allocation-chart");
+    if (tempChart) {
+        tempChart.destroy()
     }
 
     new Chart(allocation_chart_el, {
@@ -32,7 +32,7 @@ async function fill_allocation_chart(data) {
         data: {
             labels: data_labels,
             datasets: [{
-                label: `Value (${currency_el.value})`,
+                label: `Value (${currency})`,
                 data: data_values,
             }]
         }
@@ -42,46 +42,41 @@ async function fill_allocation_chart(data) {
 
 /**
  * Fill PIT chart.
+ * @param {Array<Object>} data - array of PITs.
+ * @param {String} currency - lowercase currency code.
  * @returns {Promise<void>} nothing.
  */
-async function fill_pit_chart() {
+async function fill_pit_chart(data, currency) {
     let pit_chart_el = document.querySelector("#pit-chart");
-    let currency_el = document.querySelector("#currency");
-    if (pit_chart_el === null || currency_el === null) {
-        throw Error("failed finding pit chart || failed finding currency");
+    if (pit_chart_el === null) {
+        throw Error("failed finding #pit-chart");
     }
 
-    await get_pits(currency_el.value)
-        .then((data) => {
-            data.sort((a, b) => a - b);
-            let data_values = data.map((x) => x.total_value_in_currency);
-            let data_labels = data.map((x) => parse_date(new Date(x.time * 1000)));
+    data.sort((a, b) => a - b);
+    let data_values = data.map((x) => x.total_value_in_currency);
+    let data_labels = data.map((x) => parse_date(new Date(x.time * 1000)));
 
-            let tmpChart = Chart.getChart("pit-chart");
-            if (tmpChart) {
-                tmpChart.destroy()
-            }
+    let tempChart = Chart.getChart("pit-chart");
+    if (tempChart) {
+        tempChart.destroy()
+    }
 
-            new Chart(pit_chart_el, {
-                type: "line",
-                data: {
-                    labels: data_labels,
-                    datasets: [{
-                        label: `Total value (${currency_el.value})`,
-                        data: data_values,
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        x: {
-                            display: false
-                        }
-                    }
+    new Chart(pit_chart_el, {
+        type: "line",
+        data: {
+            labels: data_labels,
+            datasets: [{
+                label: `Total value (${currency})`,
+                data: data_values,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    display: false
                 }
-            });
-        })
-        .catch((error) => {
-            throw error;
-        });
+            }
+        }
+    });
 }
