@@ -190,13 +190,22 @@ footer a {
 /* Charts styling */
 
 #charts {
-    position: relative;
-
     display: flex;
     justify-content: space-between;
 
-    width: 70%;
+    width: 90%;
     height: 50%;
 
     padding: 10px 0 0 0;
+}
+
+#charts div {
+    position: relative;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: calc(100% / 2);
+    height: 100%;
 }

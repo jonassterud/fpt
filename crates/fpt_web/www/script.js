@@ -267,7 +267,6 @@ async function fill_allocation_chart(data) {
 
     let temp = {}
     data.forEach((x) => {
-        console.log(x);
         if (temp.hasOwnProperty(x.category)) {
             temp[x.category] += x.value_in_currency;
         } else {
