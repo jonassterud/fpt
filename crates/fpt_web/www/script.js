@@ -13,14 +13,15 @@ async function load(soft = true) {
     try {
         if (soft) {
             await update_values();
-            await fill_table().then(async (amount) => {
+            await fill_table().then(async (assets) => {
                 let message = "No assets were found in the local database.<br>Do you want to remotely load assets?";
-                if (amount === 0 && await fancy_prompt(message) === true) {
+                if (assets.length === 0 && await fancy_prompt(message) === true) {
                     // console.timeEnd(`${soft ? 'soft' : 'hard'} load`); // doesn't work?
                     load(false);
                 } else {
                     await save_pit();
-                    await fill_pit_graph();
+                    await fill_pit_chart();
+                    await fill_allocation_chart(assets);
                 }
             });
         } else {
@@ -71,7 +72,7 @@ async function save_pit() {
 
 /**
  * Fill table with assets.
- * @returns {Promise<Number>} amount of assets loaded.
+ * @returns {Promise<Array<Object>>} array of assets.
  */
 async function fill_table() {
     let table_el = document.querySelector("main table tbody");
@@ -81,7 +82,7 @@ async function fill_table() {
         throw Error("failed finding table || failed finding currency || failed finding total_value");
     }
 
-    let amount_of_assets = 0;
+    let assets_copy = undefined;
 
     await fetch(`http://localhost:5050/get_assets/${currency_el.value}`)
         .then((resp) => {
@@ -92,7 +93,7 @@ async function fill_table() {
                 throw Error("unexpected json");
             }
 
-            amount_of_assets = data.length;
+            assets_copy = data;
 
             table_el.innerHTML = "";
             let seen_categories = [];
@@ -132,7 +133,7 @@ async function fill_table() {
             throw error;
         });
 
-    return amount_of_assets;
+    return assets_copy;
 }
 
 /**
@@ -200,14 +201,14 @@ async function fancy_prompt(message) {
 }
 
 /**
- * Fill PIT graph.
+ * Fill PIT chart.
  * @returns {Promise<void>} nothing.
  */
-async function fill_pit_graph() {
-    let pit_graph_el = document.querySelector("#pit-graph");
+async function fill_pit_chart() {
+    let pit_chart_el = document.querySelector("#pit-chart");
     let currency_el = document.querySelector("#currency");
-    if (pit_graph_el === null || currency_el === null) {
-        throw Error("failed finding pit graph || failed finding currency");
+    if (pit_chart_el === null || currency_el === null) {
+        throw Error("failed finding pit chart || failed finding currency");
     }
 
     await fetch(`http://localhost:5050/get_pits/${currency_el.value}`)
@@ -223,12 +224,12 @@ async function fill_pit_graph() {
             let data_values = data.map((x) => x.total_value_in_currency);
             let data_labels = data.map((x) => parse_date(new Date(x.time * 1000)));
 
-            let tmpChart = Chart.getChart("pit-graph");
+            let tmpChart = Chart.getChart("pit-chart");
             if (tmpChart) {
                 tmpChart.destroy()
             }
 
-            new Chart(pit_graph_el, {
+            new Chart(pit_chart_el, {
                 type: "line",
                 data: {
                     labels: data_labels,
@@ -250,4 +251,46 @@ async function fill_pit_graph() {
         .catch((error) => {
             throw error;
         })
+}
+
+/**
+ * Fill allocation chart.
+ * @param {Array<Object>} data - array of assets.
+ * @returns {Promise<void>} nothing.
+ */
+async function fill_allocation_chart(data) {
+    let allocation_chart_el = document.querySelector("#allocation-chart");
+    let currency_el = document.querySelector("#currency");
+    if (allocation_chart_el === null || currency_el === null) {
+        throw Error("failed finding pit chart || failed finding currency");
+    }
+
+    let temp = {}
+    data.forEach((x) => {
+        console.log(x);
+        if (temp.hasOwnProperty(x.category)) {
+            temp[x.category] += x.value_in_currency;
+        } else {
+            temp[x.category] = 0;
+        }
+    });
+
+    let data_values = Object.entries(temp).map((x) => x[1]);
+    let data_labels = Object.entries(temp).map((x) => x[0]);
+
+    let tmpChart = Chart.getChart("allocation-chart");
+    if (tmpChart) {
+        tmpChart.destroy()
+    }
+
+    new Chart(allocation_chart_el, {
+        type: "pie",
+        data: {
+            labels: data_labels,
+            datasets: [{
+                label: `Value (${currency_el.value})`,
+                data: data_values,
+            }]
+        }
+    });
 }

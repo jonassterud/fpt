@@ -12,7 +12,10 @@
 
 a,
 a:visited {
+    text-decoration: underline;
     color: var(--link-color);
+
+    cursor: pointer;
 }
 
 select {
@@ -184,13 +187,13 @@ footer a {
     cursor: pointer;
 }
 
-/* PIT-graph styling */
+/* Charts styling */
 
-#pit-graph-wrapper {
+#charts {
     position: relative;
 
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
 
     width: 70%;
     height: 50%;
