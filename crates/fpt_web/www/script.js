@@ -1,9 +1,17 @@
-/// Determine whether to call hard/soft load based on search params.
 window.onload = () => {
-    load(true);
+    try {
+        load(true);
+    }
+    catch (error) {
+        console.error(error);
+    }
 }
 
-/// Update asset values and refill table.
+/**
+ * Load everything.
+ * @param {bool} soft - whether to load assets remotely (*hard load*) or locally (*soft load*).
+ * @returns {Promise<void>} nothing.
+ */
 async function load(soft = true) {
     console.time(`${soft ? 'soft' : 'hard'} load`);
 
@@ -26,14 +34,17 @@ async function load(soft = true) {
         }
     }
     catch (error) {
-        console.error(error);
+        throw error;
     }
     finally {
         console.timeEnd(`${soft ? 'soft' : 'hard'} load`);
     }
 }
 
-/// Update assets.
+/**
+ * Update assets.
+ * @returns {Promise<void>} nothing.
+ */
 async function update_assets() {
     await fetch("http://localhost:5050/update_assets")
         .catch((error) => {
@@ -41,7 +52,10 @@ async function update_assets() {
         });
 }
 
-/// Update asset values.
+/**
+ * Update asset values.
+ * @returns {Promise<void>} nothing.
+ */
 async function update_values() {
     await fetch("http://localhost:5050/update_values")
         .catch((error) => {
@@ -49,7 +63,10 @@ async function update_values() {
         });
 }
 
-/// Save PIT
+/**
+ * Save PIT.
+ * @returns {Promise<void>} nothing.
+ */
 async function save_pit() {
     await fetch("http://localhost:5050/save_pit")
         .catch((error) => {
@@ -57,7 +74,10 @@ async function save_pit() {
         });
 }
 
-/// Fill table with assets.
+/**
+ * Fill table with assets.
+ * @returns {Promise<Number>} amount of assets loaded.
+ */
 async function fill_table() {
     let table_el = document.querySelector("main table tbody");
     let total_value_el = document.querySelector("#total_value");
@@ -71,7 +91,8 @@ async function fill_table() {
     await fetch(`http://localhost:5050/get_assets/${currency_el.value}`)
         .then((resp) => {
             return resp.json();
-        }).then((data) => {
+        })
+        .then((data) => {
             if (typeof data != typeof []) {
                 throw Error("unexpected json");
             }
@@ -111,14 +132,20 @@ async function fill_table() {
 
             // Display total value.
             total_value_el.innerHTML = parse_currency(total_value, currency_el.value);
-        }).catch((error) => {
+        })
+        .catch((error) => {
             throw error;
         });
 
     return amount_of_assets;
 }
 
-/// Parse currency in locale of currency.
+/**
+ * Parse number as a currency in relevant locale.
+ * @param {String} number - number to parse.
+ * @param {String} currency - currency code in lowercase.
+ * @returns {Promise<String>} parsed currency.
+ */
 function parse_currency(number, currency) {
     number = Number.parseFloat(number);
 
@@ -134,12 +161,20 @@ function parse_currency(number, currency) {
     }
 }
 
-/// Parse date in locale.
+/**
+ * Parse data in locale.
+ * @param {Date} date - date to parse
+ * @returns {String} parsed date.
+ */
 function parse_date(date) {
     return date.toLocaleString();
 }
 
-/// Prompt user (yes or no).
+/**
+ * Prompt user with a question.
+ * @param {String} message - question to ask user.
+ * @returns {Promise<bool>} user response.
+ */
 async function fancy_prompt(message) {
     document.body.innerHTML += `
         <div id="fancy-prompt">
@@ -153,7 +188,7 @@ async function fancy_prompt(message) {
         </div>
     `;
 
-    let button_promise = new Promise(function (resolve, _) {
+    let button_promise = new Promise((resolve) => {
         document.querySelector("#yes-button").addEventListener("click", () => {
             resolve(true);
         })
@@ -169,7 +204,10 @@ async function fancy_prompt(message) {
     return result;
 }
 
-/// Fill PIT-graph
+/**
+ * Fill PIT graph.
+ * @returns {Promise<void>} nothing.
+ */
 async function fill_pit_graph() {
     let pit_graph_el = document.querySelector("#pit-graph");
     let currency_el = document.querySelector("#currency");
@@ -180,7 +218,8 @@ async function fill_pit_graph() {
     await fetch(`http://localhost:5050/get_pits/${currency_el.value}`)
         .then((resp) => {
             return resp.json();
-        }).then((data) => {
+        })
+        .then((data) => {
             if (typeof data != typeof []) {
                 throw Error("unexpected json");
             }
@@ -212,5 +251,8 @@ async function fill_pit_graph() {
                     }
                 }
             });
-        });
+        })
+        .catch((error) => {
+            throw error;
+        })
 }
