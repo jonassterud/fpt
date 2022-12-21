@@ -12,7 +12,7 @@ async function load(soft = true) {
 
     try {
         if (soft) {
-            const currency = document.getElementById("#currency")?.value;
+            const currency = document.getElementById("currency")?.value;
             if (currency === undefined) {
                 throw Error("failed finding #currency");
             }
@@ -56,7 +56,7 @@ async function load(soft = true) {
  */
 async function fill_table(data, currency) {
     const table_el = document.querySelector("main table tbody");
-    const total_value_el = document.getElementById("#total_value");
+    const total_value_el = document.getElementById("total_value");
     if (table_el === null || total_value_el === null) {
         throw Error("failed finding main table tbody  || failed finding #total_value");
     }
@@ -115,17 +115,17 @@ async function fancy_prompt(message) {
     `;
 
     const button_promise = new Promise((resolve) => {
-        document.getElementById("#yes-button").addEventListener("click", () => {
+        document.getElementById("yes-button").addEventListener("click", () => {
             resolve(true);
         })
 
-        document.getElementById("#no-button").addEventListener("click", () => {
+        document.getElementById("no-button").addEventListener("click", () => {
             resolve(false);
         });
     });
 
     const result = await button_promise;
-    document.getElementById("#fancy-prompt").remove();
+    document.getElementById("fancy-prompt").remove();
 
     return result;
 }

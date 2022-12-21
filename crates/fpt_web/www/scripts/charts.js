@@ -5,7 +5,7 @@
  * @returns {Promise<void>} nothing.
  */
 async function fill_allocation_chart(data, currency) {
-    const allocation_chart_el = document.getElementById("#allocation-chart");
+    const allocation_chart_el = document.getElementById("allocation-chart");
     if (allocation_chart_el === null) {
         throw Error("failed finding #allocation-chart");
     }
