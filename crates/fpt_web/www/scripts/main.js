@@ -12,12 +12,12 @@ async function load(soft = true) {
 
     try {
         if (soft) {
-            let currency_el = document.querySelector("#currency");
+            const currency_el = document.querySelector("#currency");
             if (currency_el === null) {
                 throw Error("failed finding #currency");
             }
 
-            let assets = await get_assets(currency_el.value);
+            const assets = await get_assets(currency_el.value);
             if (
                 assets.length === 0 &&
                 await fancy_prompt("No assets were found in the local database.<br>Do you want to remotely load assets?") === true
@@ -55,14 +55,14 @@ async function load(soft = true) {
  * @returns {Promise<void>} nothing.
  */
 async function fill_table(data, currency) {
-    let table_el = document.querySelector("main table tbody");
-    let total_value_el = document.querySelector("#total_value");
+    const table_el = document.querySelector("main table tbody");
+    const total_value_el = document.querySelector("#total_value");
     if (table_el === null || total_value_el === null) {
         throw Error("failed finding main table tbody  || failed finding #total_value");
     }
 
     table_el.innerHTML = "";
-    let seen_categories = [];
+    const seen_categories = [];
     let total_value = 0;
     data.sort((a, b) => a.category < b.category);
 
@@ -70,7 +70,7 @@ async function fill_table(data, currency) {
     data.forEach((asset) => {
         // Add category header.
         if (!seen_categories.includes(asset.category)) {
-            let rowspan = data.filter((x) => x.category === asset.category).length + 1;
+            const rowspan = data.filter((x) => x.category === asset.category).length + 1;
             table_el.innerHTML += `<th headers='category' scope='row' rowspan='${rowspan}'>${asset.category}</th>`;
             seen_categories.push(asset.category);
         }
@@ -79,10 +79,10 @@ async function fill_table(data, currency) {
         total_value += asset.value_in_currency;
 
         // Parse asset data.
-        let name = asset.name[0].toUpperCase() + asset.name.slice(1).toLowerCase();
-        let amount = asset.amount;
-        let code = asset.code;
-        let value = parse_currency(asset.value_in_currency, currency);
+        const name = asset.name[0].toUpperCase() + asset.name.slice(1).toLowerCase();
+        const amount = asset.amount;
+        const code = asset.code;
+        const value = parse_currency(asset.value_in_currency, currency);
 
         // Add asset data to table.
         table_el.innerHTML += `<tr>
@@ -114,7 +114,7 @@ async function fancy_prompt(message) {
         </div>
     `;
 
-    let button_promise = new Promise((resolve) => {
+    const button_promise = new Promise((resolve) => {
         document.querySelector("#yes-button").addEventListener("click", () => {
             resolve(true);
         })
@@ -124,7 +124,7 @@ async function fancy_prompt(message) {
         });
     });
 
-    let result = await button_promise;
+    const result = await button_promise;
     document.querySelector("#fancy-prompt").remove();
 
     return result;
