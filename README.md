@@ -10,11 +10,11 @@
 [![Release](https://github.com/jonassterud/fpt/actions/workflows/release.yml/badge.svg)](https://github.com/jonassterud/fpt/actions/workflows/release.yml)
 
 ## Supported platforms/assets
-* Sparebank 1
+* [Sparebank 1](https://developer.sparebank1.no/#/documentation/gettingstarted)
 * Nordnet (*coming soon*)
-* Coinbase (*coming soon*)
-* Bitcoin
-* Ethereum
+* [Coinbase](https://www.coinbase.com/settings/api)
+* [Bitcoin](https://bitcoin.org/en/)
+* [Ethereum](https://ethereum.org/en/)
 
 ## Configuration
 Configuration is done in the `config.toml` file that is created when you run the program.  
