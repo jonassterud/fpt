@@ -23,6 +23,8 @@ Remember that this file contains very sensitive data!
 SPAREBANK1_ID = ''
 SPAREBANK1_SECRET = ''
 SPAREBANK1_REFRESH_TOKEN = ''
+COINBASE_KEY = ''
+COINBASE_SECRET = ''
 BITCOIN_ADDRESSES = ['']
 ETHEREUM_ADDRESSES = ['']
 ```
