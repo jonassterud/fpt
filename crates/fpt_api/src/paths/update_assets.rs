@@ -22,6 +22,11 @@ pub async fn update_assets() -> impl Responder {
             assets.append(&mut sparebank1::get_assets(&mut config)?);
         }
 
+        // Load Coinbase assets
+        if !config.coinbase_key.is_empty() && !config.coinbase_secret.is_empty() {
+            assets.append(&mut coinbase::get_assets(&config)?);
+        }
+
         // Load Bitcoin assets
         for bitcoin_address in config.bitcoin_addresses {
             assets.push(Asset {

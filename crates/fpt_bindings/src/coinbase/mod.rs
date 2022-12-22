@@ -39,8 +39,6 @@ pub fn get_assets(config: &Config) -> Result<Vec<Asset>> {
     let timestamp = get_access_timestamp()?;
     let sign = get_access_sign(config, timestamp, "GET", "/api/v3/brokerage/accounts", "")?;
 
-    println!("{}\n{}", sign, timestamp);
-
     let url = "https://api.coinbase.com/api/v3/brokerage/accounts/";
     let resp = ureq::get(url)
         .set("Accept", "application/json; charset=utf-8")
@@ -58,7 +56,7 @@ pub fn get_assets(config: &Config) -> Result<Vec<Asset>> {
         let currency = gv_str("currency", available_balance)?;
 
         out.push(Asset {
-            category: AssetCategory::Currency,
+            category: AssetCategory::Cryptocurrency,
             name: name.to_string(),
             code: currency.to_string(),
             amount: value,
