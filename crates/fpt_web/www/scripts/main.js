@@ -48,9 +48,9 @@ async function load(soft = true) {
  * Fill table with assets.
  * @param {Array<Object>} data - vector of assets.
  * @param {String} currency - lowercase currency code.
- * @returns {Promise<void>} nothing.
+ * @returns {void} nothing.
  */
-async function fill_table(data, currency) {
+function fill_table(data, currency) {
     const table_el = document.querySelector("main table tbody");
     const total_value_el = document.getElementById("total_value");
     if (table_el === null || total_value_el === null) {
