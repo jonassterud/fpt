@@ -23,7 +23,7 @@ pub async fn get_pits(currency: web::Path<String>) -> impl Responder {
     match open_and_get_pits() {
         Ok(out) => actix_web::HttpResponse::Ok().body(out),
         Err(error) => {
-            eprint!("{error}");
+            log::error!("{error}");
             actix_web::HttpResponse::InternalServerError().finish()
         }
     }

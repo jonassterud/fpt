@@ -554,6 +554,7 @@ dependencies = [
  "anyhow",
  "fpt_bindings",
  "fpt_common",
+ "log",
  "rusqlite",
  "serde",
  "serde_json",

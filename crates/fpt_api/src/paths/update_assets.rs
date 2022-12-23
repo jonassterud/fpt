@@ -8,7 +8,9 @@ use fpt_common::*;
 /// Updates assets and adds them to the database.
 #[get("/update_assets")]
 pub async fn update_assets() -> impl Responder {
-    fn add_assets_to_database() -> Result<()> {
+    let add_assets_to_database = || -> Result<()> {
+        let mut out = Ok(());
+
         let db = Database::open()?;
         let mut config = Config::load()?;
 
@@ -19,12 +21,18 @@ pub async fn update_assets() -> impl Responder {
             && !config.sparebank1_secret.is_empty()
             && !config.sparebank1_refresh_token.is_empty()
         {
-            assets.append(&mut sparebank1::get_assets(&mut config)?);
+            match sparebank1::get_assets(&mut config) {
+                Ok(mut out) => assets.append(&mut out),
+                Err(error) => out = Err(error),
+            };
         }
 
         // Load Coinbase assets
         if !config.coinbase_key.is_empty() && !config.coinbase_secret.is_empty() {
-            assets.append(&mut coinbase::get_assets(&config)?);
+            match coinbase::get_assets(&config) {
+                Ok(mut out) => assets.append(&mut out),
+                Err(error) => out = Err(error),
+            };
         }
 
         // Load Bitcoin assets
@@ -57,13 +65,13 @@ pub async fn update_assets() -> impl Responder {
             db.add_asset(&asset)?;
         }
 
-        Ok(())
-    }
+        out
+    };
 
     match add_assets_to_database() {
         Ok(_) => actix_web::HttpResponse::Ok().finish(),
         Err(error) => {
-            eprint!("{error}");
+            log::error!("{error}");
             actix_web::HttpResponse::InternalServerError().finish()
         }
     }
