@@ -22,6 +22,7 @@ async function load(soft = true) {
                 load(false);
             } else {
                 await update_values();
+                assets = await get_assets(currency);
                 await Promise.all([
                     fill_table(assets, currency),
                     save_pit()
