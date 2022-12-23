@@ -1,7 +1,6 @@
+use crate::Database;
 use actix_web::{get, web, Responder};
 use anyhow::Result;
-
-use crate::Database;
 
 /// Get assets from the database.
 #[get("/get_assets/{currency}")]
@@ -22,7 +21,7 @@ pub async fn get_assets(currency: web::Path<String>) -> impl Responder {
     match open_and_get_assets() {
         Ok(out) => actix_web::HttpResponse::Ok().body(out),
         Err(error) => {
-            eprint!("{error}");
+            log::error!("{error}");
             actix_web::HttpResponse::InternalServerError().finish()
         }
     }

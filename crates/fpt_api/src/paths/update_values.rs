@@ -1,7 +1,6 @@
+use crate::Database;
 use actix_web::{get, Responder};
 use anyhow::Result;
-
-use crate::Database;
 use fpt_bindings::*;
 
 /// Updates assets and adds them to the database.
@@ -24,7 +23,7 @@ pub async fn update_values() -> impl Responder {
     match update_values_in_database() {
         Ok(_) => actix_web::HttpResponse::Ok().finish(),
         Err(error) => {
-            eprint!("{error}");
+            log::error!("{error}");
             actix_web::HttpResponse::InternalServerError().finish()
         }
     }

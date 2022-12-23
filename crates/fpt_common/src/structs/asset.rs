@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 /// Enum of asset categories.
-#[derive(Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub enum AssetCategory {
     /// Unknown.
     Unknown,
@@ -14,7 +14,7 @@ pub enum AssetCategory {
 }
 
 /// General asset struct.
-#[derive(Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct Asset {
     /// Category of asset.
     pub category: AssetCategory,

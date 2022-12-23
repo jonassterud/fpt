@@ -13,13 +13,13 @@ window.onload = () => {
 }
 
 /**
- * Load everything.
+ * Load scripts.
  * @param {String} sources - source to a javascript file.
  * @param {bool} async - whether to load script async.
  * @returns {Promise<void>} nothing.
  */
 function load_scripts(...sources) {
-    let promises = [];
+    const promises = [];
 
     sources.forEach((source) => {
         promises.push(new Promise((resolve, reject) => {

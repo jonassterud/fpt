@@ -3,18 +3,17 @@
   <img width='150px' src='media/logo/vector/default-monochrome-black.svg'>
 </picture>
 
- 
 \- a financial portfolio tracker.
 
 [![CI](https://github.com/jonassterud/fpt/actions/workflows/ci.yml/badge.svg)](https://github.com/jonassterud/fpt/actions/workflows/ci.yml)
 [![Release](https://github.com/jonassterud/fpt/actions/workflows/release.yml/badge.svg)](https://github.com/jonassterud/fpt/actions/workflows/release.yml)
 
 ## Supported platforms/assets
-* Sparebank 1
+* [Sparebank 1](https://developer.sparebank1.no/#/documentation/gettingstarted)
 * Nordnet (*coming soon*)
-* Coinbase (*coming soon*)
-* Bitcoin
-* Ethereum
+* [Coinbase](https://www.coinbase.com/settings/api)
+* [Bitcoin](https://bitcoin.org/en/)
+* [Ethereum](https://ethereum.org/en/)
 
 ## Configuration
 Configuration is done in the `config.toml` file that is created when you run the program.  
@@ -23,9 +22,14 @@ Remember that this file contains very sensitive data!
 SPAREBANK1_ID = ''
 SPAREBANK1_SECRET = ''
 SPAREBANK1_REFRESH_TOKEN = ''
+COINBASE_KEY = ''
+COINBASE_SECRET = ''
 BITCOIN_ADDRESSES = ['']
 ETHEREUM_ADDRESSES = ['']
 ```
+
+## Screenshots
+<img src='media/screenshots/screenshot.png' alt='screenshot'>
 
 ## Contributing
 Feel free to contribute!

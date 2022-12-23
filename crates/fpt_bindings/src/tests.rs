@@ -32,3 +32,10 @@ fn test_btccom() {
 fn test_ethplorer() {
     ethplorer::get_balance("0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045").unwrap();
 }
+
+#[test]
+#[ignore = "avoid spam"]
+fn test_coinbase() {
+    let config = fpt_common::Config::load().unwrap();
+    coinbase::get_assets(&config).unwrap();
+}

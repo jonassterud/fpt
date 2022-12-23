@@ -2,9 +2,9 @@
  * Fill allocation chart.
  * @param {Array<Object>} data - array of assets.
  * @param {String} currency - lowercase currency code.
- * @returns {Promise<void>} nothing.
+ * @returns {void} nothing.
  */
-async function fill_allocation_chart(data, currency) {
+function fill_allocation_chart(data, currency) {
     const allocation_chart_el = document.getElementById("allocation-chart");
     if (allocation_chart_el === null) {
         throw Error("failed finding #allocation-chart");
@@ -44,9 +44,9 @@ async function fill_allocation_chart(data, currency) {
  * Fill PIT chart.
  * @param {Array<Object>} data - array of PITs.
  * @param {String} currency - lowercase currency code.
- * @returns {Promise<void>} nothing.
+ * @returns {void} nothing.
  */
-async function fill_pit_chart(data, currency) {
+function fill_pit_chart(data, currency) {
     const pit_chart_el = document.querySelector("#pit-chart");
     if (pit_chart_el === null) {
         throw Error("failed finding #pit-chart");

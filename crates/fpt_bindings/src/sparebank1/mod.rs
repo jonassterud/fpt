@@ -1,6 +1,5 @@
-use anyhow::Result;
-
 use crate::common::*;
+use anyhow::Result;
 use fpt_common::*;
 
 /// Get access token from refresh token.
