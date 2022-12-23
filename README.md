@@ -3,7 +3,6 @@
   <img width='150px' src='media/logo/vector/default-monochrome-black.svg'>
 </picture>
 
- 
 \- a financial portfolio tracker.
 
 [![CI](https://github.com/jonassterud/fpt/actions/workflows/ci.yml/badge.svg)](https://github.com/jonassterud/fpt/actions/workflows/ci.yml)
@@ -28,6 +27,9 @@ COINBASE_SECRET = ''
 BITCOIN_ADDRESSES = ['']
 ETHEREUM_ADDRESSES = ['']
 ```
+
+## Screenshots
+<img src='media/screenshots/screenshot.png' alt='screenshot'>
 
 ## Contributing
 Feel free to contribute!
