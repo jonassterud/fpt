@@ -1,7 +1,6 @@
+use crate::Database;
 use actix_web::{get, web, Responder};
 use anyhow::Result;
-
-use crate::Database;
 use fpt_bindings::*;
 
 /// Get PITs from the database.

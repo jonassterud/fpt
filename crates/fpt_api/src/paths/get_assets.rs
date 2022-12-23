@@ -1,7 +1,6 @@
+use crate::Database;
 use actix_web::{get, web, Responder};
 use anyhow::Result;
-
-use crate::Database;
 
 /// Get assets from the database.
 #[get("/get_assets/{currency}")]

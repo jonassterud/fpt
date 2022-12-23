@@ -1,6 +1,5 @@
-use anyhow::Result;
-
 use crate::common::*;
+use anyhow::Result;
 
 /// Get value of asset.
 pub fn get_value(from: &str, to: &str) -> Result<f64> {

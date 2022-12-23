@@ -1,10 +1,9 @@
+use crate::common::*;
 use anyhow::Result;
+use fpt_common::*;
 use hmac::{Hmac, Mac};
 use sha2::Sha256;
 use std::time::{SystemTime, UNIX_EPOCH};
-
-use crate::common::*;
-use fpt_common::*;
 
 fn get_access_key(config: &Config) -> &str {
     &config.coinbase_key

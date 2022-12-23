@@ -1,7 +1,6 @@
+use crate::Database;
 use actix_web::{get, Responder};
 use anyhow::Result;
-
-use crate::Database;
 use fpt_bindings::*;
 
 /// Updates assets and adds them to the database.

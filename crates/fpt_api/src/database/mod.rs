@@ -1,7 +1,6 @@
 use anyhow::{anyhow, Result};
-use rusqlite::{Connection, ToSql};
-
 use fpt_common::*;
+use rusqlite::{Connection, ToSql};
 
 /// SQLite Database.
 pub struct Database {

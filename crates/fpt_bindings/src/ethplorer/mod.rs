@@ -1,6 +1,5 @@
-use anyhow::Result;
-
 use crate::common::*;
+use anyhow::Result;
 
 /// Get balance of Ethereum address.
 pub fn get_balance(address: &str) -> Result<f64> {
