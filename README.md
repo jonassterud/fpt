@@ -13,7 +13,7 @@
 ## Screenshot(s)
 
 <picture>
-  <img width='200px' src='media/screenshots/1.png'>
+  <img width='75%' src='media/screenshots/1.png'>
 </picture>
 
 ## Supported platforms/assets
