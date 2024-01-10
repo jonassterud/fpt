@@ -9,6 +9,13 @@
 [![CI](https://github.com/jonassterud/fpt/actions/workflows/ci.yml/badge.svg)](https://github.com/jonassterud/fpt/actions/workflows/ci.yml)
 [![Release](https://github.com/jonassterud/fpt/actions/workflows/release.yml/badge.svg)](https://github.com/jonassterud/fpt/actions/workflows/release.yml)
 
+
+## Screenshot(s)
+
+<picture>
+  <img width='200px' src='media/screenshots/1.png'>
+</picture>
+
 ## Supported platforms/assets
 * Sparebank 1
 * Nordnet (*coming soon*)
